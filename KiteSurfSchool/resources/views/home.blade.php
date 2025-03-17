@@ -9,7 +9,10 @@
 <body class="bg-gray-100">
     <!-- Navbar -->
     <nav class="bg-gray-600 p-4 flex justify-between items-center text-white">
-        <span class="text-lg font-semibold">Home Pagina</span>
+        <div class="space-x-4">
+            <a href="/" class="text-lg font-semibold">Home</a>
+            <a href="/contact" class="text-lg">Contact</a>
+        </div>
         <div class="space-x-2">
             <span class="inline-block w-4 h-4 bg-white rounded-full"></span>
             <span class="inline-block w-4 h-4 bg-white"></span>
