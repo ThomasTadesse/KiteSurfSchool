@@ -6,37 +6,38 @@
     <title>Contact Pagina</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-gray-600 p-4 flex justify-between items-center text-white mb-8">
-        <div class="space-x-4">
-            <a href="/" class="text-lg">Home</a>
-            <a href="/contact" class="text-lg font-semibold">Contact</a>
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
+    <nav class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 flex justify-between items-center text-white shadow-lg">
+        <div class="space-x-6">
+            <a href="/" class="text-lg hover:text-blue-200 transition duration-200">Home</a>
+            <a href="/contact" class="text-lg font-semibold bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400 transition duration-200">Contact</a>
+            <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Login</a>
         </div>
     </nav>
-    <div class="flex items-center justify-center h-screen">
-        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-            <h1 class="text-2xl font-bold mb-6 text-center">Contact Pagina</h1>
-            <form>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="naam">
+    <div class="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md space-y-8 transform hover:scale-[1.01] transition-transform duration-300">
+            <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Contact</h1>
+            <form class="space-y-6">
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="naam">
                         Naam
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="naam" type="text" placeholder="Uw naam">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" id="naam" type="text" placeholder="Uw naam">
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="email">
                         E-mail
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Uw e-mailadres">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" id="email" type="email" placeholder="Uw e-mailadres">
                 </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bericht">
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="bericht">
                         Bericht
                     </label>
-                    <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="bericht" placeholder="Uw bericht"></textarea>
+                    <textarea class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 min-h-[120px]" id="bericht" placeholder="Uw bericht"></textarea>
                 </div>
-                <div class="flex items-center justify-between">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                <div class="flex items-center justify-center">
+                    <button class="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105 w-full" type="button">
                         Versturen
                     </button>
                 </div>
