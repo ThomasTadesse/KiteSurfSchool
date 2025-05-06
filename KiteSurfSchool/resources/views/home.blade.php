@@ -98,13 +98,13 @@
                             class="text-xl text-white hover:text-blue-300 transition duration-300">
                             <span class="inline-block w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">f</span>
                         </a>
-                        <a href="#" target="_blank"
+                        <a href="https://x.com/" target="_blank"
                             class="text-xl text-white hover:text-blue-300 transition duration-300">
-                            <span class="inline-block w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">t</span>
+                            <span class="inline-block w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">𝕏</span>
                         </a>
-                        <a href="#" target="_blank"
+                        <a href="https://www.instagram.com/" target="_blank"
                             class="text-xl text-white hover:text-blue-300 transition duration-300">
-                            <span class="inline-block w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">i</span>
+                            <span class="inline-block w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">🥀</span>
                         </a>
                     </div>
                 </div>
