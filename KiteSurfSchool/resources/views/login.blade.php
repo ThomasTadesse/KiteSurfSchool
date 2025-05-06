@@ -17,16 +17,45 @@
     <div class="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
         <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md space-y-8 transform hover:scale-[1.01] transition-transform duration-300">
             <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Log in</h1>
-            <form action="/login" method="POST" class="space-y-6">
+            
+            @if(session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif
+            
+            <form action="{{ route('login') }}" method="POST" class="space-y-6">
                 @csrf
                 <div>
-                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" id="email" type="email" placeholder="Uw e-mailadres">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" 
+                           id="email" 
+                           name="email" 
+                           type="email" 
+                           placeholder="Uw e-mailadres" 
+                           required>
+                    @error('email')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div>
-                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" id="password" type="password" placeholder="Uw wachtwoord">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" 
+                           id="password" 
+                           name="password" 
+                           type="password" 
+                           placeholder="Uw wachtwoord" 
+                           required>
+                    @error('password')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="flex items-center justify-between">
-                    <button class="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105" <button type="submit">
+                    <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105">
                         Inloggen
                     </button>
                     <a class="font-semibold text-sm text-blue-500 hover:text-blue-600 hover:underline transition duration-200" href="#">
@@ -42,34 +71,63 @@
             </div>
 
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Registreren</h2>
-            <form action="/register" method="POST" class="space-y-6">
+            <form action="{{ route('register') }}" method="POST" class="space-y-6">
                 @csrf
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="register-naam">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="name">
                         Naam
                     </label>
-                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200" id="register-naam" type="text" placeholder="Uw naam">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200" 
+                           id="name" 
+                           name="name" 
+                           type="text" 
+                           placeholder="Uw naam" 
+                           required>
+                    @error('name')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="register-email">
                         E-mail
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="register-email" type="email" placeholder="Uw e-mailadres">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200" 
+                           id="register-email" 
+                           name="email" 
+                           type="email" 
+                           placeholder="Uw e-mailadres" 
+                           required>
+                    @error('email')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="register-password">
                         Wachtwoord
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="register-password" type="password" placeholder="Kies een wachtwoord">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200" 
+                           id="register-password" 
+                           name="password" 
+                           type="password" 
+                           placeholder="Kies een wachtwoord" 
+                           required>
+                    @error('password')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="register-password-confirm">
                         Bevestig Wachtwoord
                     </label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="register-password-confirm" type="password" placeholder="Bevestig uw wachtwoord">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200" 
+                           id="register-password-confirm" 
+                           name="password_confirmation" 
+                           type="password" 
+                           placeholder="Bevestig uw wachtwoord" 
+                           required>
                 </div>
                 <div class="flex items-center justify-center">
-                    <button class="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 px-6 rounded-lg hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105 w-full" <button type="submit">
+                    <button type="submit" class="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 px-6 rounded-lg hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105 w-full">
                         Registreren
                     </button>
                 </div>
@@ -105,7 +163,7 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-4">Volg Ons</h3>
                     <div class="flex space-x-4">
-                    <a href="https://facebook.com" target="_blank"
+                        <a href="https://facebook.com" target="_blank"
                             class="text-xl text-white hover:text-blue-300 transition duration-300">
                             <span class="inline-block w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">f</span>
                         </a>
