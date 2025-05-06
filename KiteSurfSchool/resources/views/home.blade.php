@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Pagina</title>
+    <title>Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
@@ -14,8 +14,8 @@
             <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
         </div>
         <div class="space-x-3">
-            <span class="inline-block w-4 h-4 bg-blue-200 rounded-full transform hover:scale-110 transition-transform"></span>
-            <span class="inline-block w-4 h-4 bg-blue-200 transform hover:scale-110 transition-transform"></span>
+            <span class="inline-block w-4 h-4 transform hover:scale-110 transition-transform">📧</span>
+            <span class="inline-block w-4 h-4 transform hover:scale-110 transition-transform">🛒</span>
         </div>
     </nav>
     
