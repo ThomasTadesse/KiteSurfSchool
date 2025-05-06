@@ -19,17 +19,22 @@
         </div>
     </nav>
     
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 h-40 w-full flex items-center justify-center text-white text-xl font-semibold shadow-lg">
-        Header Placeholder
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 h-40 w-full relative flex items-center justify-center text-white text-xl font-semibold shadow-lg">
+        <img src="https://img.freepik.com/free-photo/person-surfing-flying-parachute-same-time-kitesurfing-bonaire-caribbean_181624-11389.jpg?t=st=1746515797~exp=1746519397~hmac=b494e04f2567079e70d4fd4dd664a39a45d0063234cc0fbf35038fbe555deced&w=1380" 
+            alt="Kitesurfing in Bonaire" 
+            class="w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+            <h1 class="text-4xl font-bold text-white tracking-wider">Kitesurfschool Windkracht-12</h1>
+        </div>
     </div>
     
     <div class="p-8 space-y-8 max-w-6xl mx-auto">
         <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
             <div class="bg-blue-100 w-32 h-20 mb-4 rounded-lg flex items-center justify-center text-blue-600 font-medium">
-                Image 1
+                1
             </div>
             <div class="bg-blue-500 w-24 h-24 rounded-lg flex items-center justify-center text-white font-medium">
-                Image 2
+                2
             </div>
         </div>
         
@@ -38,7 +43,7 @@
                 Icon
             </div>
             <div class="bg-blue-500 px-6 py-2 rounded-lg flex items-center justify-center text-white font-medium">
-                Text
+                Text block
             </div>
         </div>
         
