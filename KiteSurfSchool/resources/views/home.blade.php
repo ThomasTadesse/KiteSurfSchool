@@ -11,7 +11,11 @@
         <div class="space-x-6">
             <a href="/" class="text-lg font-semibold bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400 transition duration-200">Home</a>
             <a href="/contact" class="text-lg hover:text-blue-200 transition duration-200">Contact</a>
-            <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
+            @auth
+                <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
+            @else
+                <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
+            @endauth
         </div>
         <div class="space-x-3">
             <span class="inline-block w-4 h-4 transform hover:scale-110 transition-transform">📧</span>
