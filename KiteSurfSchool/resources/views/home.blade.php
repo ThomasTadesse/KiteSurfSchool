@@ -30,11 +30,30 @@
     
     <div class="p-8 space-y-8 max-w-6xl mx-auto">
         <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="bg-blue-100 w-32 h-20 mb-4 rounded-lg flex items-center justify-center text-blue-600 font-medium">
-                1 placeholder
-            </div>
-            <div class="bg-blue-500 w-24 h-24 rounded-lg flex items-center justify-center text-white font-medium">
-                2 placeholder
+            <div class="flex flex-col md:flex-row gap-6">
+                <div class="flex items-start gap-4">
+                    <div class="w-40 rounded-lg">
+                        <img src="https://img.freepik.com/premium-photo/kite-surfing-goa-exhilarating-action-shot_1324785-151889.jpg?w=826" 
+                            alt="Kitesurfing action shot" 
+                            class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-blue-700 mb-2">Spectaculaire actie</h3>
+                        <p class="text-gray-600">Ervaar de ultieme vrijheid van kitesurfen met een perfecte combinatie van wind, water en adrenaline. Onze lessen helpen je snel deze sensatie te beleven.</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start gap-4 mt-6 md:mt-0">
+                    <div class="w-40 rounded-lg">
+                        <img src="https://img.freepik.com/premium-photo/person-kitesurfing-with-kite-board-harness-surf_1314467-56480.jpg?w=826" 
+                            alt="Kitesurfer with equipment" 
+                            class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-xl font-bold text-blue-700 mb-2">Professionele uitrusting</h3>
+                        <p class="text-gray-600">Bij Windkracht-12 krijg je les met moderne, veilige en goed onderhouden materialen. Alle uitrusting is inbegrepen bij onze lessen.</p>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -43,7 +62,19 @@
                 <img src="https://img.freepik.com/free-photo/young-man-with-kitesurf-board_23-2148197356.jpg?t=st=1746516224~exp=1746519824~hmac=f7244e4f0b20e591e53f1ce8afa309b5c10e2d948cd69a76edd7734f51a393b6&w=1380" alt="">
             </div>
            
-            <!-- more -->
+            <div class="flex-1 p-6">
+                <h2 class="text-2xl font-bold text-blue-700 mb-4">Leer kitesurfen bij ons</h2>
+                <p class="text-gray-600 mb-4">Begin je avontuur in kitesurfen met onze professionele instructeurs. We bieden lessen aan voor alle niveaus, van beginner tot gevorderd.</p>
+                <ul class="list-disc list-inside text-gray-600 mb-6">
+                    <li>Veilige en gecertificeerde instructie</li>
+                    <li>Kleine groepen voor persoonlijke aandacht</li>
+                    <li>Modern materiaal inbegrepen</li>
+                    <li>Flexibele planning</li>
+                </ul>
+                <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
+                    Reserveer nu
+                </button>
+            </div>
 
         </div>
         
