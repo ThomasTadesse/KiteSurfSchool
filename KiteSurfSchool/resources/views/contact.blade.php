@@ -11,8 +11,11 @@
         <div class="space-x-6">
             <a href="/" class="text-lg hover:text-blue-200 transition duration-200">Home</a>
             <a href="/contact" class="text-lg font-semibold bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400 transition duration-200">Contact</a>
-            <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
-        </div>
+            @auth
+                <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
+            @else
+                <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
+            @endauth        </div>
     </nav>
     <div class="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
         <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md space-y-8 transform hover:scale-[1.01] transition-transform duration-300">
