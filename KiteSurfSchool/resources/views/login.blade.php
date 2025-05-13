@@ -195,5 +195,46 @@
             <p>&copy; {{ date('Y') }} KiteSurfschool Windkracht-12. Alle rechten voorbehouden.</p>
         </div>
     </footer>
+
+    <!-- Account Activation Modal -->
+    <div id="activationModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Account Activeren</h2>
+            <p class="text-gray-600 mb-6">Bedankt voor je registratie! Controleer je e-mail om je account te activeren. Je ontvangt binnen enkele minuten een activatielink.</p>
+            <div class="flex justify-center">
+                <button id="closeModal" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-200">
+                    Begrepen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get the registration form and modal elements
+        const registerForm = document.querySelector('form[action="{{ route("register") }}"]');
+        const activationModal = document.getElementById('activationModal');
+        const closeModalBtn = document.getElementById('closeModal');
+
+        // Event listener for form submission
+        registerForm.addEventListener('submit', function(event) {
+            // Only show the modal if the form is valid
+            if (registerForm.checkValidity()) {
+                event.preventDefault();
+                
+                // Show the activation modal
+                activationModal.classList.remove('hidden');
+                
+                // Submit the form after a delay to allow the user to read the message
+                setTimeout(() => {
+                    registerForm.submit();
+                }, 2000);
+            }
+        });
+
+        // Close modal when the button is clicked
+        closeModalBtn.addEventListener('click', function() {
+            activationModal.classList.add('hidden');
+        });
+    </script>
 </body>
 </html>
