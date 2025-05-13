@@ -68,7 +68,7 @@
                     <button type="submit" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105">
                         Inloggen
                     </button>
-                    <a class="font-semibold text-sm text-blue-500 hover:text-blue-600 hover:underline transition duration-200" href="#">
+                    <a class="font-semibold text-sm text-blue-500 hover:text-blue-600 hover:underline transition duration-200" href="{{ route('password.request') }}">
                         Wachtwoord vergeten?
                     </a>
                 </div>
