@@ -23,3 +23,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::get('/profiel', function () {
     return view('profiel');
 })->middleware('auth')->name('profile');
+
+// Add activation route
+Route::get('/activate/{token}', [AuthController::class, 'activateAccount'])->name('activation');

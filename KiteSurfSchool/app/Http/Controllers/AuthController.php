@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
@@ -44,16 +47,37 @@ class AuthController extends Controller
             'password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()],
         ]);
 
+        // Generate activation token
+        $activationToken = Str::random(60);
+
+        // Create user with activation token and set active to false
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => 'klant', // Default role for new registrations
+            'activation_token' => $activationToken,
+            'active' => false,
         ]);
 
-        Auth::login($user);
+        // Send welcome email with activation link
+        Mail::to($user->email)->send(new WelcomeMail($user, $activationToken));
 
-        return redirect('/profiel')->with('success', 'Account succesvol aangemaakt!');
+        return redirect('/login')->with('status', 'Registratie succesvol! Controleer je e-mail om je account te activeren.');
+    }
+
+    public function activateAccount($token)
+    {
+        $user = User::where('activation_token', $token)->first();
+        
+        if (!$user) {
+            return redirect('/login')->with('error', 'Ongeldige activatie link.');
+        }
+        
+        $user->activation_token = null;
+        $user->active = true;
+        $user->save();
+        
+        return redirect('/login')->with('status', 'Je account is geactiveerd! Je kunt nu inloggen.');
     }
 
     public function logout(Request $request)

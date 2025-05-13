@@ -14,14 +14,17 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
+        $eigenaarRole = Role::where('slug', 'eigenaar')->first();
+        
         $user = User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('Admin1234'),
+            'activation_token' => null,
+            'active' => true,
         ]);
         
-        // Assign eigenaar role to the admin user
-        $eigenaarRole = Role::where('slug', 'eigenaar')->first();
+        // Attach eigenaar role to the admin user
         if ($eigenaarRole) {
             $user->roles()->attach($eigenaarRole);
         }
