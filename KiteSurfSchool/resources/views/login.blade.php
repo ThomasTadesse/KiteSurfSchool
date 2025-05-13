@@ -36,17 +36,24 @@
             <form action="{{ route('login') }}" method="POST" class="space-y-6">
                 @csrf
                 <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="email">
+                        E-mail
+                    </label>
                     <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" 
                            id="email" 
                            name="email" 
                            type="email" 
                            placeholder="Uw e-mailadres" 
+                           value="{{ old('email') }}"
                            required>
                     @error('email')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
                 <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="password">
+                        Wachtwoord
+                    </label>
                     <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" 
                            id="password" 
                            name="password" 
@@ -77,39 +84,41 @@
             <form action="{{ route('register') }}" method="POST" class="space-y-6">
                 @csrf
                 <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="name">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2" for="register_name">
                         Naam
                     </label>
                     <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200" 
-                           id="name" 
+                           id="register_name" 
                            name="name" 
                            type="text" 
                            placeholder="Uw naam" 
+                           value="{{ old('name') }}"
                            required>
                     @error('name')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="register-email">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="register_email">
                         E-mail
                     </label>
                     <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200" 
-                           id="register-email" 
+                           id="register_email" 
                            name="email" 
                            type="email" 
                            placeholder="Uw e-mailadres" 
+                           value="{{ old('email', '') }}"
                            required>
                     @error('email')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="register-password">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="register_password">
                         Wachtwoord
                     </label>
                     <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200" 
-                           id="register-password" 
+                           id="register_password" 
                            name="password" 
                            type="password" 
                            placeholder="Kies een wachtwoord" 
@@ -119,11 +128,11 @@
                     @enderror
                 </div>
                 <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="register-password-confirm">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="register_password_confirmation">
                         Bevestig Wachtwoord
                     </label>
                     <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200" 
-                           id="register-password-confirm" 
+                           id="register_password_confirmation" 
                            name="password_confirmation" 
                            type="password" 
                            placeholder="Bevestig uw wachtwoord" 
