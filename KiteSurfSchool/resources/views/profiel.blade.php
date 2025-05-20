@@ -12,6 +12,10 @@
             <a href="/" class="text-lg hover:text-blue-200 transition duration-200">Home</a>
             <a href="{{ route('lespakketten.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Cursussen</a>
             <a href="/contact" class="text-lg hover:text-blue-200 transition duration-200">Contact</a>
+            @auth
+                <a href="{{ route('students.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Studenten</a>
+                <a href="{{ route('instructors.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Instructeurs</a>
+            @endauth
         </div>
         <div>
             <form action="{{ route('logout') }}" method="POST" class="inline">

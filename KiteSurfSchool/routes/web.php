@@ -6,6 +6,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LespakkettenController;
 use App\Http\Controllers\PasswordResetLinkController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\InstructorController;
 
 Route::get('/', function () {
     return view('home');
@@ -31,6 +33,28 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware('auth')->group(function () {
     Route::get('/profiel', [ProfileController::class, 'show'])->name('profile.show');
 });
+
+
+// students
+Route::middleware(['auth'])->group(function () {
+    Route::resource('admin/students', StudentController::class)->except(['index']);
+    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    Route::get('/students/{student}', [StudentController::class, 'show'])->name('students.show');
+    Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+    Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
+    Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+});
+
+// instructors
+Route::middleware(['auth'])->group(function () {
+    Route::resource('admin/instructors', InstructorController::class)->except(['index']);
+    Route::get('/instructors', [InstructorController::class, 'index'])->name('instructors.index');
+    Route::get('/instructors/{instructor}', [InstructorController::class, 'show'])->name('instructors.show');
+    Route::post('/instructors', [InstructorController::class, 'store'])->name('instructors.store');
+    Route::put('/instructors/{instructor}', [InstructorController::class, 'update'])->name('instructors.update');
+    Route::delete('/instructors/{instructor}', [InstructorController::class, 'destroy'])->name('instructors.destroy');
+});
+
 
 // Add activation route
 Route::get('/activate/{token}', [AuthController::class, 'activateAccount'])->name('activation');

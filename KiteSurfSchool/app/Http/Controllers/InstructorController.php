@@ -14,7 +14,7 @@ class InstructorController extends Controller
     public function index()
     {
         $instructors = Instructor::with('user')->get();
-        return response()->json($instructors);
+        return view('instructors.index', compact('instructors'));
     }
 
     /**
