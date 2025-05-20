@@ -25,7 +25,7 @@
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">Kies het lespakket dat het beste bij jou past en begin vandaag nog met kitesurfen!</p>
         </header>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach($lespakketten as $pakket)
             <div class="bg-white rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105 border border-gray-100">
                 <div class="p-6">
