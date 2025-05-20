@@ -15,32 +15,65 @@
                 <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
             @else
                 <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
-            @endauth        </div>
+            @endauth        
+        </div>
     </nav>
     <div class="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
         <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md space-y-8 transform hover:scale-[1.01] transition-transform duration-300">
             <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Heb je vragen? Neem contact met ons op!</h1>
-            <form class="space-y-6">
+            
+            @if (session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
+            <form method="POST" action="{{ route('contact.store') }}" class="space-y-6">
+                @csrf
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-2" for="naam">
                         Naam
                     </label>
-                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" id="naam" type="text" placeholder="Uw naam">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" 
+                           id="naam" 
+                           name="name" 
+                           type="text" 
+                           placeholder="Uw naam"
+                           value="{{ old('name') }}">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-2" for="email">
                         E-mail
                     </label>
-                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" id="email" type="email" placeholder="Uw e-mailadres">
+                    <input class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" 
+                           id="email" 
+                           name="email" 
+                           type="email" 
+                           placeholder="Uw e-mailadres"
+                           value="{{ old('email') }}">
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-2" for="bericht">
                         Bericht
                     </label>
-                    <textarea class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 min-h-[120px]" id="bericht" placeholder="Uw bericht"></textarea>
+                    <textarea class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 min-h-[120px]" 
+                              id="bericht" 
+                              name="message" 
+                              placeholder="Uw bericht">{{ old('message') }}</textarea>
                 </div>
                 <div class="flex items-center justify-center">
-                    <button class="bg-gradient-to-r from-blue-500 to-green-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105 w-full" type="button">
+                    <button class="bg-gradient-to-r from-blue-500 to-green-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-105 w-full" 
+                            type="submit">
                         Versturen
                     </button>
                 </div>
