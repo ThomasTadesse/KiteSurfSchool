@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
     <nav class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 flex justify-between items-center text-white shadow-lg">
         <div class="space-x-6">
             <a href="/" class="text-lg font-semibold bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400 transition duration-200">Home</a>
+            <a href="{{ route('lespakketten.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Cursussen</a>
             <a href="/contact" class="text-lg hover:text-blue-200 transition duration-200">Contact</a>
             @auth
                 <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
@@ -112,7 +114,7 @@
                     <h3 class="text-lg font-semibold mb-4">Snelle Links</h3>
                     <ul class="text-sm space-y-2">
                         <li><a href="{{ url('/') }}" class="hover:text-blue-300 transition">Home</a></li>
-                        <li><a href="{{ url('/cursussen') }}" class="hover:text-blue-300 transition">Cursussen</a></li>
+                        <li><a href="{{ route('lespakketten.index') }}" class="hover:text-blue-300 transition">Cursussen</a></li>
                         <li><a href="{{ url('/locaties') }}" class="hover:text-blue-300 transition">Locaties</a></li>
                         <li><a href="{{ url('/contact') }}" class="hover:text-blue-300 transition">Contact</a></li>
                     </ul>

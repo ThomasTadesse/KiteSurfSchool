@@ -10,6 +10,7 @@
     <nav class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 flex justify-between items-center text-white shadow-lg">
         <div class="space-x-6">
             <a href="/" class="text-lg hover:text-blue-200 transition duration-200">Home</a>
+            <a href="{{ route('lespakketten.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Cursussen</a>
             <a href="/contact" class="text-lg font-semibold bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400 transition duration-200">Contact</a>
             @auth
                 <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>

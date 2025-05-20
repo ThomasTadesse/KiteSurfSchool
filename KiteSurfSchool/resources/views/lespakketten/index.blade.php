@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lespakketten - Windkracht-12</title>
+    <title>Cursussen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
     <nav class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 flex justify-between items-center text-white shadow-lg">
         <div class="space-x-6">
             <a href="/" class="text-lg hover:text-blue-200 transition duration-200">Home</a>
+            <a href="{{ route('lespakketten.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Cursussen</a>
             <a href="/contact" class="text-lg hover:text-blue-200 transition duration-200">Contact</a>
             @auth
                 <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>

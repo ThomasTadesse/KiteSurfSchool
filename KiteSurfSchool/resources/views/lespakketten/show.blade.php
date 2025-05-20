@@ -18,8 +18,7 @@
             @endauth        </div>
     </nav>
 
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi quaerat natus temporibus dolorum blanditiis pariatur sed saepe nulla assumenda recusandae hic quos, praesentium aliquid fugit eveniet velit mollitia et minima!</p>
-
+    <p>hallo</p>
 
     
     <footer class="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-8">
