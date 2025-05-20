@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="px-6 pb-6">
-                    <a href="/lespakketten/{{ $pakket->id }}/boek" class="block w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center py-3 rounded-lg font-medium hover:from-blue-700 hover:to-blue-900 transition duration-300 transform hover:-translate-y-1">Boek dit pakket</a>
+                    <a href="/lespakketten/{{ $pakket->id }}" class="block w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center py-3 rounded-lg font-medium hover:from-blue-700 hover:to-blue-900 transition duration-300 transform hover:-translate-y-1">Boek dit pakket</a>
                 </div>
             </div>
             @endforeach

@@ -55,6 +55,7 @@ Route::post('/reset-password', function () {
 
 // Lesson package routes
 Route::get('/lespakketten', [LespakkettenController::class, 'index'])->name('lespakketten.index');
+Route::get('/lespakketten/{lespakketten}', [LespakkettenController::class, 'show'])->name('lespakketten.show');
 
 // Admin routes for lesson packages
 Route::middleware(['auth'])->group(function () {
