@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\LespakkettenController;
 use App\Http\Controllers\PasswordResetLinkController;
 use App\Http\Controllers\ProfileController;
 
@@ -12,6 +13,11 @@ Route::get('/', function () {
 
 Route::get('/contact', [ContactController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+// Contact message routes for owners
+Route::middleware(['auth'])->group(function () {
+    Route::get('/contact/{contact}', [ContactController::class, 'show'])->name('contact.show');
+    Route::delete('/contact/{contact}', [ContactController::class, 'destroy'])->name('contact.destroy');
+});
 
 Route::get('/login', function () {
     return view('login');
@@ -47,8 +53,12 @@ Route::post('/reset-password', function () {
     // This will be handled later when we implement the reset password functionality
 })->middleware('guest')->name('password.update');
 
-// Contact message routes for owners
+// Lesson package routes
+Route::get('/lespakketten', [LespakkettenController::class, 'index'])->name('lespakketten.index');
+
+// Admin routes for lesson packages
 Route::middleware(['auth'])->group(function () {
-    Route::get('/contact/{contact}', [ContactController::class, 'show'])->name('contact.show');
-    Route::delete('/contact/{contact}', [ContactController::class, 'destroy'])->name('contact.destroy');
+    Route::resource('admin/lespakketten', LespakkettenController::class)->except(['index']);
 });
+
+
