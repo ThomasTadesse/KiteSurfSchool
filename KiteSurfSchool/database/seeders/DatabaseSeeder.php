@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AdminSeeder::class,
             LespakkettenSeeder::class,
+            StudentSeeder::class,
+            InstructorSeeder::class,
             // Other seeders...
         ]);
     }
