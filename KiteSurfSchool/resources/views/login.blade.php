@@ -13,10 +13,13 @@
             <a href="{{ route('lespakketten.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Cursussen</a>
             <a href="/contact" class="text-lg hover:text-blue-200 transition duration-200">Contact</a>
             @auth
+                <a href="{{ route('students.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Studenten</a>
+                <a href="{{ route('instructors.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Instructeurs</a>
                 <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
             @else
                 <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
-            @endauth        </div>
+            @endauth 
+        </div>
     </nav>
     <div class="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
         <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md space-y-8 transform hover:scale-[1.01] transition-transform duration-300">

@@ -13,23 +13,24 @@
             <a href="/" class="text-lg font-semibold bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-400 transition duration-200">Home</a>
             <a href="{{ route('lespakketten.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Cursussen</a>
             <a href="/contact" class="text-lg hover:text-blue-200 transition duration-200">Contact</a>
+           
             @auth
+                <a href="{{ route('students.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Studenten</a>
+                <a href="{{ route('instructors.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Instructeurs</a>
                 <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
             @else
                 <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
             @endauth
         </div>
     </nav>
-    
     <div class="bg-gradient-to-r from-blue-600 to-blue-800 h-40 w-full relative flex items-center justify-center text-white text-xl font-semibold shadow-lg">
         <img src="https://img.freepik.com/free-photo/person-surfing-flying-parachute-same-time-kitesurfing-bonaire-caribbean_181624-11389.jpg?t=st=1746515797~exp=1746519397~hmac=b494e04f2567079e70d4fd4dd664a39a45d0063234cc0fbf35038fbe555deced&w=1380" 
             alt="Kitesurfing in Bonaire" 
             class="w-full h-full object-cover object-center">
         <div class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-            <h1 class="text-4xl font-bold text-white tracking-wider">Create New Instructor</h1>
+            <h1 class="text-4xl font-bold text-white tracking-wider">Surf the waves</h1>
         </div>
     </div>
-    
     <div class="p-8 space-y-8 max-w-6xl mx-auto">
         <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
             <h2 class="text-2xl font-bold text-blue-700 mb-6">{{ __('Create New Instructor') }}</h2>

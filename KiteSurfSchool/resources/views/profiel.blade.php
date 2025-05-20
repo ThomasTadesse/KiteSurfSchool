@@ -15,6 +15,9 @@
             @auth
                 <a href="{{ route('students.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Studenten</a>
                 <a href="{{ route('instructors.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Instructeurs</a>
+                <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
+            @else
+                <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
             @endauth
         </div>
         <div>
