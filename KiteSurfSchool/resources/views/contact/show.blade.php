@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profiel</title>
+    <title>Contact Bericht</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
@@ -11,6 +11,7 @@
         <div class="space-x-6">
             <a href="/" class="text-lg hover:text-blue-200 transition duration-200">Home</a>
             <a href="/contact" class="text-lg hover:text-blue-200 transition duration-200">Contact</a>
+            <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
         </div>
         <div>
             <form action="{{ route('logout') }}" method="POST" class="inline">
@@ -22,69 +23,46 @@
 
     <div class="container mx-auto px-4 py-12">
         <div class="bg-white p-8 rounded-xl shadow-lg max-w-3xl mx-auto">
-            <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Welkom, {{ Auth::user()->name }}</h1>
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Contact Bericht Details</h1>
+                <a href="/profiel" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                    Terug naar profiel
+                </a>
+            </div>
             
-            <div class="mb-8">
-                <h2 class="text-xl font-semibold mb-4">Jouw gegevens</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="border-t border-gray-200 pt-6">
+                <div class="grid grid-cols-1 gap-6">
                     <div>
                         <p class="text-sm text-gray-600">Naam</p>
-                        <p class="font-medium">{{ Auth::user()->name }}</p>
+                        <p class="font-medium text-lg">{{ $contact->name }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">Email</p>
-                        <p class="font-medium">{{ Auth::user()->email }}</p>
+                        <p class="font-medium text-lg">{{ $contact->email }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Verzonden op</p>
+                        <p class="font-medium">{{ $contact->created_at->format('d-m-Y H:i') }}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Bericht</p>
+                        <div class="mt-2 p-4 bg-gray-50 rounded-lg">
+                            <p class="whitespace-pre-wrap">{{ $contact->message }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            @if(Auth::user()->isEigenaar())
-            <div class="mb-8">
-                <h2 class="text-xl font-semibold mb-4">Ontvangen contactformulieren</h2>
-                @if(isset($contacts) && count($contacts) > 0)
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white rounded-lg overflow-hidden">
-                            <thead class="bg-blue-100">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Naam</th>
-                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Email</th>
-                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Bericht</th>
-                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Verzonden</th>
-                                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Actie</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @foreach($contacts as $contact)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-4 py-3 text-sm text-gray-900">{{ $contact->name }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-900">{{ $contact->email }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-900">{{ Str::limit($contact->message, 50) }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-900">{{ $contact->created_at->format('d-m-Y H:i') }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-900">
-                                            <a href="{{ route('contact.show', $contact->id) }}" class="text-blue-600 hover:underline">Bekijken</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @else
-                    <div class="bg-blue-50 rounded-lg p-6 text-center">
-                        <p class="text-gray-600">Er zijn nog geen contactformulieren ontvangen.</p>
-                    </div>
-                @endif
-            </div>
-            @endif
-            
-
-
-            <div>
-                <h2 class="text-xl font-semibold mb-4">Jouw boekingen</h2>
-                <div class="bg-blue-50 rounded-lg p-6 text-center">
-                    <p class="text-gray-600">Je hebt nog geen boekingen gemaakt.</p>
-                    <a href="/" class="inline-block mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-200">
-                        Bekijk het aanbod
+                
+                <div class="mt-8 pt-6 border-t border-gray-200 flex space-x-4">
+                    <a href="mailto:{{ $contact->email }}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                        Reageren via email
                     </a>
+                    <form action="{{ route('contact.destroy', $contact->id) }}" method="POST" onsubmit="return confirm('Weet je zeker dat je dit bericht wilt verwijderen?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                            Verwijderen
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

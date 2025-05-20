@@ -4,12 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PasswordResetLinkController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/contact', [ContactController::class, 'show']);
+Route::get('/contact', [ContactController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('/login', function () {
@@ -20,10 +21,10 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Add profile route
-Route::get('/profiel', function () {
-    return view('profiel');
-})->middleware('auth')->name('profile');
+// Profile routes
+Route::middleware('auth')->group(function () {
+    Route::get('/profiel', [ProfileController::class, 'show'])->name('profile.show');
+});
 
 // Add activation route
 Route::get('/activate/{token}', [AuthController::class, 'activateAccount'])->name('activation');
@@ -45,3 +46,9 @@ Route::get('/reset-password/{token}', function ($token) {
 Route::post('/reset-password', function () {
     // This will be handled later when we implement the reset password functionality
 })->middleware('guest')->name('password.update');
+
+// Contact message routes for owners
+Route::middleware(['auth'])->group(function () {
+    Route::get('/contact/{contact}', [ContactController::class, 'show'])->name('contact.show');
+    Route::delete('/contact/{contact}', [ContactController::class, 'destroy'])->name('contact.destroy');
+});
