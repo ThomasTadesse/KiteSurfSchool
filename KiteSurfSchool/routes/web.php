@@ -71,6 +71,24 @@ Route::middleware(['auth'])->group(function () {
     // Route::delete('/instructors/{instructor}', [InstructorController::class, 'destroy'])->name('instructors.destroy');
 });
 
+// bookings - let's also clean this up the same way
+Route::middleware(['auth'])->group(function () {
+    // Use a single resource definition for bookings
+    Route::resource('bookings', BookingController::class);
+    
+    // Add the missing confirmation and cancellation routes
+    Route::get('/bookings/{booking}/confirm', [BookingController::class, 'confirm'])->name('bookings.confirm');
+    Route::get('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    
+    // Remove these conflicting routes:
+    // Route::resource('admin/bookings', BookingController::class)->except(['index']);
+    // Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    // Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
+    // Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
+    // Route::put('/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
+    // Route::delete('/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
+});
+
 
 // Add activation route
 Route::get('/activate/{token}', [AuthController::class, 'activateAccount'])->name('activation');

@@ -18,6 +18,7 @@
                 @if(Auth::user()->isEigenaar())
                 <a href="{{ route('students.index') }}" class="text-base md:text-lg hover:text-blue-200 transition duration-200">Studenten</a>
                 <a href="{{ route('instructors.index') }}" class="text-base md:text-lg hover:text-blue-200 transition duration-200">Instructeurs</a>
+                <a href="{{ route('bookings.index') }}" class="text-base md:text-lg hover:text-blue-200 transition duration-200">Facturen</a>
                 @endif
                 <a href="/profiel" class="text-base md:text-lg hover:text-blue-200 transition duration-200">Profiel</a>
             @else

@@ -7,19 +7,70 @@ use App\Models\Lespakket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $bookings = Booking::with(['user', 'lespakket'])
-            ->orderBy('datum', 'desc')
-            ->paginate(10);
+        $searchBookingId = $request->input('searchBookingId', '');
+        $searchUser = $request->input('searchUser', '');
+        $searchStatus = $request->input('searchStatus', '');
+        $searchDateFrom = $request->input('searchDateFrom', '');
+        $searchDateTo = $request->input('searchDateTo', '');
+        $searchPaymentStatus = $request->input('searchPaymentStatus', '');
+
+        try {
+            $query = Booking::with(['user', 'lespakket'])
+                ->orderBy('datum', 'desc');
+
+            // Apply filters if search parameters are provided
+            if (!empty($searchBookingId)) {
+                $query->where('id', 'LIKE', "%{$searchBookingId}%");
+            }
+
+            if (!empty($searchUser)) {
+                $query->whereHas('user', function($q) use ($searchUser) {
+                    $q->where('name', 'LIKE', "%{$searchUser}%");
+                });
+            }
+
+            if (!empty($searchStatus)) {
+                $query->where('status', $searchStatus);
+            }
+
+            if (!empty($searchPaymentStatus)) {
+                $query->where('payment_status', $searchPaymentStatus);
+            }
+
+            if (!empty($searchDateFrom)) {
+                $query->where('datum', '>=', $searchDateFrom);
+            }
+
+            if (!empty($searchDateTo)) {
+                $query->where('datum', '<=', $searchDateTo);
+            }
+
+            $bookings = $query->paginate(10);
+            Log::info('Bookings fetched: ' . $bookings->count());
             
-        return view('bookings.index', compact('bookings'));
+        } catch (\Exception $e) {
+            Log::error('Failed to fetch bookings: ' . $e->getMessage());
+            $bookings = collect()->paginate(10);
+        }
+        
+        return view('bookings.index', compact(
+            'bookings',
+            'searchBookingId',
+            'searchUser',
+            'searchStatus',
+            'searchDateFrom',
+            'searchDateTo',
+            'searchPaymentStatus'
+        ));
     }
 
     /**
@@ -27,8 +78,14 @@ class BookingController extends Controller
      */
     public function create()
     {
-        $lespakketten = Lespakket::all();
-        return view('bookings.create', compact('lespakketten'));
+        try {
+            $lespakketten = Lespakket::all();
+            return view('bookings.create', compact('lespakketten'));
+        } catch (\Exception $e) {
+            Log::error('Error loading create booking form: ' . $e->getMessage());
+            return redirect()->route('bookings.index')
+                ->with('error', 'Er is een fout opgetreden bij het laden van het formulier.');
+        }
     }
 
     /**
@@ -42,14 +99,21 @@ class BookingController extends Controller
             'notes' => 'nullable|string|max:500',
         ]);
 
-        $validated['user_id'] = Auth::id();
-        $validated['status'] = 'in behandeling';
-        $validated['payment_status'] = 'pending';
+        try {
+            $validated['user_id'] = Auth::id();
+            $validated['status'] = 'in behandeling';
+            $validated['payment_status'] = 'pending';
 
-        Booking::create($validated);
+            Booking::create($validated);
 
-        return redirect()->route('bookings.index')
-            ->with('success', 'Boeking succesvol aangemaakt.');
+            Log::info('Booking created successfully by user: ' . Auth::id());
+            return redirect()->route('bookings.index')
+                ->with('success', 'Boeking succesvol aangemaakt.');
+        } catch (\Exception $e) {
+            Log::error('Error creating booking: ' . $e->getMessage());
+            return back()->withInput()
+                ->with('error', 'Er is een fout opgetreden bij het aanmaken van de boeking.');
+        }
     }
 
     /**
@@ -57,8 +121,14 @@ class BookingController extends Controller
      */
     public function show(Booking $booking): View
     {
-        $booking->load(['user', 'lespakket']);
-        return view('bookings.show', compact('booking'));
+        try {
+            $booking->load(['user', 'lespakket']);
+            return view('bookings.show', compact('booking'));
+        } catch (\Exception $e) {
+            Log::error('Error displaying booking: ' . $e->getMessage());
+            return redirect()->route('bookings.index')
+                ->with('error', 'Er is een fout opgetreden bij het weergeven van de boeking.');
+        }
     }
 
     /**
@@ -66,8 +136,14 @@ class BookingController extends Controller
      */
     public function edit(Booking $booking)
     {
-        $lespakketten = Lespakket::all();
-        return view('bookings.edit', compact('booking', 'lespakketten'));
+        try {
+            $lespakketten = Lespakket::all();
+            return view('bookings.edit', compact('booking', 'lespakketten'));
+        } catch (\Exception $e) {
+            Log::error('Error loading edit booking form: ' . $e->getMessage());
+            return redirect()->route('bookings.index')
+                ->with('error', 'Er is een fout opgetreden bij het laden van het bewerkingsformulier.');
+        }
     }
 
     /**
@@ -83,10 +159,17 @@ class BookingController extends Controller
             'notes' => 'nullable|string|max:500',
         ]);
 
-        $booking->update($validated);
-
-        return redirect()->route('bookings.index')
-            ->with('success', 'Boeking succesvol bijgewerkt.');
+        try {
+            $booking->update($validated);
+            
+            Log::info('Booking updated successfully: ' . $booking->id);
+            return redirect()->route('bookings.index')
+                ->with('success', 'Boeking succesvol bijgewerkt.');
+        } catch (\Exception $e) {
+            Log::error('Error updating booking: ' . $e->getMessage());
+            return back()->withInput()
+                ->with('error', 'Er is een fout opgetreden bij het bijwerken van de boeking.');
+        }
     }
 
     /**
@@ -94,9 +177,86 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        $booking->delete();
+        try {
+            $bookingId = $booking->id;
+            $booking->delete();
+            
+            Log::info('Booking deleted successfully: ' . $bookingId);
+            return redirect()->route('bookings.index')
+                ->with('success', 'Boeking succesvol verwijderd.');
+        } catch (\Exception $e) {
+            Log::error('Error deleting booking: ' . $e->getMessage());
+            return redirect()->route('bookings.index')
+                ->with('error', 'Er is een fout opgetreden bij het verwijderen van de boeking.');
+        }
+    }
+    
+    /**
+     * Mark a booking as paid.
+     */
+    public function markAsPaid(Booking $booking)
+    {
+        try {
+            if ($booking->payment_status === 'paid') {
+                return redirect()->route('bookings.index')
+                    ->with('info', 'Deze boeking is al gemarkeerd als betaald.');
+            }
 
-        return redirect()->route('bookings.index')
-            ->with('success', 'Boeking succesvol verwijderd.');
+            $booking->update(['payment_status' => 'paid']);
+            
+            Log::info('Booking marked as paid: ' . $booking->id);
+            return redirect()->route('bookings.index')
+                ->with('success', 'Boeking is succesvol gemarkeerd als betaald.');
+        } catch (\Exception $e) {
+            Log::error('Error marking booking as paid: ' . $e->getMessage());
+            return redirect()->route('bookings.index')
+                ->with('error', 'Er is een fout opgetreden bij het markeren van de boeking als betaald.');
+        }
+    }
+
+    /**
+     * Mark a booking as confirmed.
+     */
+    public function confirm(Booking $booking)
+    {
+        try {
+            if ($booking->status === 'bevestigd') {
+                return redirect()->route('bookings.index')
+                    ->with('info', 'Deze boeking is al bevestigd.');
+            }
+
+            $booking->update(['status' => 'bevestigd']);
+            
+            Log::info('Booking confirmed: ' . $booking->id);
+            return redirect()->route('bookings.index')
+                ->with('success', 'Boeking is succesvol bevestigd.');
+        } catch (\Exception $e) {
+            Log::error('Error confirming booking: ' . $e->getMessage());
+            return redirect()->route('bookings.index')
+                ->with('error', 'Er is een fout opgetreden bij het bevestigen van de boeking.');
+        }
+    }
+
+    /**
+     * Cancel a booking.
+     */
+    public function cancel(Booking $booking)
+    {
+        try {
+            if ($booking->status === 'geannuleerd') {
+                return redirect()->route('bookings.index')
+                    ->with('info', 'Deze boeking is al geannuleerd.');
+            }
+
+            $booking->update(['status' => 'geannuleerd']);
+            
+            Log::info('Booking cancelled: ' . $booking->id);
+            return redirect()->route('bookings.index')
+                ->with('success', 'Boeking is succesvol geannuleerd.');
+        } catch (\Exception $e) {
+            Log::error('Error cancelling booking: ' . $e->getMessage());
+            return redirect()->route('bookings.index')
+                ->with('error', 'Er is een fout opgetreden bij het annuleren van de boeking.');
+        }
     }
 }
