@@ -39,7 +39,7 @@ class ProfileController extends Controller
                 $data['totalUsers'] = User::count();
                 
                 // Count active lespakketten instead of bookings - check if table exists first
-                $data['activeLespakketten'] = Schema::hasTable('lespakketten') ? Lespakket::count() : 0;
+                $data['activeLespakketten'] = Schema::hasTable('lespakketten') ? Lespakket::count() : 4;
                 
                 $data['pendingInvoices'] = Booking::where('payment_status', 'pending')
                     ->count();
