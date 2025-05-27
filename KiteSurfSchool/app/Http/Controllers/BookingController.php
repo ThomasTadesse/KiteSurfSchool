@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Lespakket;
+use App\Models\Student;
+use App\Models\Instructor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -25,7 +27,7 @@ class BookingController extends Controller
 
         try {
             $query = Booking::with(['user', 'lespakket'])
-                ->orderBy('datum', 'desc');
+                ->orderBy('datum', 'asc');
 
             // Apply filters if search parameters are provided
             if (!empty($searchBookingNumber)) {
@@ -88,7 +90,9 @@ class BookingController extends Controller
     {
         try {
             $lespakketten = Lespakket::all();
-            return view('bookings.create', compact('lespakketten'));
+            $students = Student::with('user')->get();
+            $instructors = Instructor::with('user')->get();
+            return view('bookings.create', compact('lespakketten', 'students', 'instructors'));
         } catch (\Exception $e) {
             Log::error('Error loading create booking form: ' . $e->getMessage());
             return redirect()->route('bookings.index')
@@ -102,25 +106,34 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'lespakket_id' => 'required|exists:lespakketten,id',
-            'datum' => 'required|date|after:now',
+            'user_id' => 'required|exists:users,id',
+            'lespakket_id' => 'required|exists:lespakkettens,id',
+            'datum' => 'required|date',
             'notes' => 'nullable|string|max:500',
+            'instructor_id' => 'nullable|exists:instructors,id',
         ]);
 
         try {
-            $validated['user_id'] = Auth::id();
+            // Get price from lespakket
+            $lespakket = Lespakket::find($validated['lespakket_id']);
+            $validated['price'] = $lespakket->prijs;
+
+            // Create a unique invoice number
+            $validated['invoice_number'] = 'INV-' . date('Ymd') . '-' . uniqid();
+            
+            // Set default values
             $validated['status'] = 'in behandeling';
             $validated['payment_status'] = 'pending';
 
             Booking::create($validated);
 
-            Log::info('Booking created successfully by user: ' . Auth::id());
+            Log::info('Booking created successfully for user: ' . $validated['user_id']);
             return redirect()->route('bookings.index')
                 ->with('success', 'Boeking succesvol aangemaakt.');
         } catch (\Exception $e) {
             Log::error('Error creating booking: ' . $e->getMessage());
             return back()->withInput()
-                ->with('error', 'Er is een fout opgetreden bij het aanmaken van de boeking.');
+                ->with('error', 'Er is een fout opgetreden bij het aanmaken van de boeking: ' . $e->getMessage());
         }
     }
 
@@ -160,7 +173,7 @@ class BookingController extends Controller
     public function update(Request $request, Booking $booking)
     {
         $validated = $request->validate([
-            'lespakket_id' => 'required|exists:lespakketten,id',
+            'lespakket_id' => 'required|exists:lespakkettens,id',
             'datum' => 'required|date',
             'status' => 'required|in:in behandeling,bevestigd,geannuleerd',
             'payment_status' => 'required|in:pending,paid,refunded',

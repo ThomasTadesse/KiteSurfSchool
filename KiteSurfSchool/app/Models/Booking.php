@@ -20,6 +20,8 @@ class Booking extends Model
         'status',
         'payment_status',
         'notes',
+        'price',
+        'instructor_id'
     ];
 
     protected $casts = [
@@ -39,6 +41,14 @@ class Booking extends Model
      */
     public function lespakket(): BelongsTo
     {
-        return $this->belongsTo(Lespakket::class);
+        return $this->belongsTo(Lespakket::class, 'lespakket_id');
+    }
+
+    /**
+     * Get the instructor associated with the booking
+     */
+    public function instructor(): BelongsTo
+    {
+        return $this->belongsTo(Instructor::class);
     }
 }

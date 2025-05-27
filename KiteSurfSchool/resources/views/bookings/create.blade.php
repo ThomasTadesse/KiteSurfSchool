@@ -23,113 +23,114 @@
             @endauth
         </div>
     </nav>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Nieuwe Boeking</h2>
+
+    <h2 class="mt-16 ml-6 text-xl font-bold text-gray-800 leading-tight">
+        {{ __('Nieuwe Factuur') }}
+    </h2>
+
+    <div class="py-4">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            @if (session('error'))
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 rounded mb-4 text-sm">
+                    <p>{{ session('error') }}</p>
                 </div>
-
-                <div class="card-body">
-                    @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-
+            @endif
+            @if (session('success'))
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-3 rounded mb-4 text-sm">
+                    <p>{{ session('success') }}</p>
+                </div>
+            @endif
+            
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+                <div class="p-5 bg-white">
                     <form method="POST" action="{{ route('bookings.store') }}">
                         @csrf
 
-                        <div class="mb-3">
-                            <label for="lespakket_id" class="form-label">Lespakket</label>
-                            <select name="lespakket_id" id="lespakket_id" class="form-control @error('lespakket_id') is-invalid @enderror" required>
-                                <option value="">Selecteer een lespakket</option>
-                                @foreach($lespakketten as $lespakket)
-                                    <option value="{{ $lespakket->id }}" {{ old('lespakket_id') == $lespakket->id ? 'selected' : '' }}>
-                                        {{ $lespakket->name }} (€{{ number_format($lespakket->price, 2) }}) - {{ $lespakket->duration }} min.
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('lespakket_id')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        <!-- Boeking details section -->
+                        <div class="mb-4">
+                            <h3 class="text-base font-medium text-gray-700 mb-2 pb-1 border-b border-gray-200">{{ __('Boeking details') }}</h3>
+                            
+                            <!-- Student Selection -->
+                            <div class="mb-3">
+                                <select name="user_id" id="user_id" 
+                                    class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('user_id') border-red-500 @enderror" required>
+                                    <option value="">Selecteer een student</option>
+                                    @foreach($students as $student)
+                                        <option value="{{ $student->user_id }}" {{ old('user_id') == $student->user_id ? 'selected' : '' }}>
+                                            {{ $student->user->name }} ({{ $student->user->email }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('user_id')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            
+                            <!-- Lespakket Selection -->
+                            <div class="mb-3">
+                                <select name="lespakket_id" id="lespakket_id" 
+                                    class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('lespakket_id') border-red-500 @enderror" required>
+                                    <option value="">Selecteer een lespakket</option>
+                                    @foreach($lespakketten as $lespakket)
+                                        <option value="{{ $lespakket->id }}" {{ old('lespakket_id') == $lespakket->id ? 'selected' : '' }}>
+                                            {{ $lespakket->naam }} (€{{ number_format($lespakket->prijs, 2) }}) - {{ $lespakket->duur }} min.
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('lespakket_id')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="datum" class="form-label">Datum en tijd</label>
-                            <input type="datetime-local" name="datum" id="datum" class="form-control @error('datum') is-invalid @enderror" 
-                                value="{{ old('datum') }}" required>
-                            @error('datum')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
+                            <!-- Datum en tijd -->
+                            <div class="mb-3">
+                                <input type="datetime-local" name="datum" id="datum"
+                                    class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('datum') border-red-500 @enderror"
+                                    value="{{ old('datum') }}" required>
+                                @error('datum')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                                <p class="text-xs text-gray-500 mt-1">Selecteer de datum en tijd van de les</p>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">Opmerkingen</label>
-                            <textarea name="notes" id="notes" rows="3" class="form-control @error('notes') is-invalid @enderror">{{ old('notes') }}</textarea>
-                            @error('notes')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
+                            <!-- Notes -->
+                            <div class="mb-3">
+                                <textarea name="notes" id="notes" rows="3" 
+                                    class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('notes') border-red-500 @enderror"
+                                    placeholder="Opmerkingen">{{ old('notes') }}</textarea>
+                                @error('notes')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">Boeking aanmaken</button>
-                            <a href="{{ route('bookings.index') }}" class="btn btn-secondary">Annuleren</a>
+                            <!-- Instructor Selection -->
+                            <div class="mb-3">
+                                <select name="instructor_id" id="instructor_id" 
+                                    class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('instructor_id') border-red-500 @enderror">
+                                    <option value="">Selecteer een instructeur (optioneel)</option>
+                                    @foreach($instructors as $instructor)
+                                        <option value="{{ $instructor->id }}" {{ old('instructor_id') == $instructor->id ? 'selected' : '' }}>
+                                            {{ $instructor->user->name }} ({{ $instructor->specialization }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('instructor_id')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Submit button -->
+                            <div class="mt-4">
+                                <button type="submit" 
+                                    class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow hover:bg-blue-500 transition duration-200">
+                                    {{ __('Aanmaken') }}
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
-    <footer class="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-8">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Windkracht-12</h3>
-                    <p class="text-sm text-gray-300">De beste kitesurfschool van Nederland met professionele instructeurs en lessen op de mooiste locaties langs de Nederlandse kust.</p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Snelle Links</h3>
-                    <ul class="text-sm space-y-2">
-                        <li><a href="{{ url('/') }}" class="hover:text-blue-300 transition">Home</a></li>
-                        <li><a href="{{ route('lespakketten.index') }}" class="hover:text-blue-300 transition">Cursussen</a></li>
-                        <li><a href="{{ url('/locaties') }}" class="hover:text-blue-300 transition">Locaties</a></li>
-                        <li><a href="{{ url('/contact') }}" class="hover:text-blue-300 transition">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Contact Informatie</h3>
-                    <p class="text-sm text-gray-300">
-                        Hoofdkantoor Utrecht<br>
-                        Kitesurfstraat 12<br>
-                        3511 BS Utrecht<br>
-                        Telefoon: 030-1234567
-                    </p>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Volg Ons</h3>
-                    <div class="flex space-x-4">
-                        <a href="https://facebook.com" target="_blank"
-                            class="text-xl text-white hover:text-blue-300 transition duration-300">
-                            <span class="inline-block w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">f</span>
-                        </a>
-                        <a href="https://x.com/" target="_blank"
-                            class="text-xl text-white hover:text-blue-300 transition duration-300">
-                            <span class="inline-block w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">𝕏</span>
-                        </a>
-                        <a href="https://www.instagram.com/" target="_blank"
-                            class="text-xl text-white hover:text-blue-300 transition duration-300">
-                            <span class="inline-block w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">🥀</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container mx-auto text-center mt-6 pt-6 border-t border-blue-600">
-            <p>&copy; {{ date('Y') }} KiteSurfschool Windkracht-12. Alle rechten voorbehouden.</p>
-        </div>
-    </footer>
 </body>
 </html>
