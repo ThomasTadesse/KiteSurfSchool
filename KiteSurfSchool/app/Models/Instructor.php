@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Instructor extends Model
@@ -30,8 +31,10 @@ class Instructor extends Model
     /**
      * Get the lespakketten taught by the instructor.
      */
-    public function lespakketten(): HasMany
+    public function lespakketten(): BelongsToMany
     {
-        return $this->hasMany(Lespakket::class);
+        return $this->belongsToMany(Lespakketten::class, 'instructor_lespakket')
+                    ->withPivot('start_date', 'end_date')
+                    ->withTimestamps();
     }
 }

@@ -31,4 +31,15 @@ class lespakketten extends Model
                     ->withPivot('start_date', 'end_date', 'status', 'notes')
                     ->withTimestamps();
     }
+
+    /**
+     * The instructors that teach the lespakket.
+     */
+    public function instructors(): BelongsToMany
+    {
+        return $this->belongsToMany(Instructor::class, 'instructor_lespakket')
+                    ->withPivot('start_date', 'end_date')
+                    ->withTimestamps();
+    }
+    
 }
