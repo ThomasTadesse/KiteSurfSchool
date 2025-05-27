@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class lespakketten extends Model
 {
@@ -22,12 +23,12 @@ class lespakketten extends Model
     ];
 
     /**
-     * Get the students associated with the lespakket.
+     * The students that belong to the lespakket.
      */
-    public function students()
+    public function students(): BelongsToMany
     {
-        return $this->hasMany(Student::class, 'student_lespakket')
-                    ->withPivot(['start_date', 'end_date', 'status', 'notes'])
+        return $this->belongsToMany(Student::class, 'student_lespakket')
+                    ->withPivot('start_date', 'end_date', 'status', 'notes')
                     ->withTimestamps();
     }
 }

@@ -47,12 +47,12 @@ class Student extends Model
     }
 
     /**
-     * Get the lespakketten for the student.
+     * The lespakketten that belong to the student.
      */
     public function lespakketten(): BelongsToMany
     {
         return $this->belongsToMany(lespakketten::class, 'student_lespakket')
-                    ->withPivot(['start_date', 'end_date', 'status', 'notes'])
+                    ->withPivot('start_date', 'end_date', 'status', 'notes')
                     ->withTimestamps();
     }
 }

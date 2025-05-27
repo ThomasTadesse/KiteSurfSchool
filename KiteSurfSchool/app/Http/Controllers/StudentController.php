@@ -108,8 +108,18 @@ class StudentController extends Controller
             // Debug information
             Log::info('Showing student with ID: ' . $student->id);
             
-            // Eager load relationships to prevent N+1 query issues
-            $student->load(['user', 'lespakketten']);
+            // Eager load user relationship
+            $student->load('user');
+            
+            // Try to load lespakketten separately with error handling
+            try {
+                $student->load('lespakketten');
+            } catch (\Exception $e) {
+                // Log the error but continue without the lespakketten data
+                Log::error('Error loading lespakketten for student: ' . $e->getMessage());
+                // Set an empty collection for lespakketten to avoid template errors
+                $student->setRelation('lespakketten', collect([]));
+            }
             
             // Check if the view exists before rendering
             if (!View::exists('students.show')) {

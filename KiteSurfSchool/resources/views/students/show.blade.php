@@ -91,7 +91,7 @@
             <div class="mt-8">
                 <h2 class="text-xl font-semibold text-blue-800 mb-4">Ingeschreven Lespakketten</h2>
                 
-                @if($student->lespakketten->count() > 0)
+                @if($student->lespakketten && $student->lespakketten->count() > 0)
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white rounded-lg overflow-hidden">
                             <thead class="bg-blue-100">
@@ -106,17 +106,23 @@
                                 @foreach($student->lespakketten as $lespakket)
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-4 py-3 text-sm text-gray-900">{{ $lespakket->naam }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-900">{{ $lespakket->pivot->start_date }}</td>
-                                        <td class="px-4 py-3 text-sm text-gray-900">{{ $lespakket->pivot->end_date }}</td>
+                                        <td class="px-4 py-3 text-sm text-gray-900">{{ $lespakket->pivot->start_date ?? 'N/A' }}</td>
+                                        <td class="px-4 py-3 text-sm text-gray-900">{{ $lespakket->pivot->end_date ?? 'N/A' }}</td>
                                         <td class="px-4 py-3 text-sm text-gray-900">
+                                            @if(isset($lespakket->pivot->status))
                                             <span class="px-2 py-1 rounded-full text-xs 
                                                 {{ $lespakket->pivot->status === 'active' ? 'bg-green-100 text-green-800' : '' }}
                                                 {{ $lespakket->pivot->status === 'completed' ? 'bg-blue-100 text-blue-800' : '' }}
                                                 {{ $lespakket->pivot->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}
                                                 {{ $lespakket->pivot->status === 'scheduled' ? 'bg-yellow-100 text-yellow-800' : '' }}
                                             ">
-                                                {{ ucfirst($lespakket->pivot->status ?? 'Unknown') }}
+                                                {{ ucfirst($lespakket->pivot->status) }}
                                             </span>
+                                            @else
+                                            <span class="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-800">
+                                                Onbekend
+                                            </span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
