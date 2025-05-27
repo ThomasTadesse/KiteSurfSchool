@@ -101,4 +101,12 @@ class User extends Authenticatable
     {
         return $this->hasRole('eigenaar');
     }
+
+    /**
+     * Get the student associated with the user.
+     */
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
 }
