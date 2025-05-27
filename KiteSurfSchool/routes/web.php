@@ -35,10 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profiel', [ProfileController::class, 'show'])->name('profile.show');
     
     // Admin routes for site maintenance
-    Route::post('/admin/maintenance/toggle', function() {
-        // Placeholder for maintenance mode toggle functionality
-        return back()->with('success', 'Maintenance mode setting updated.');
-    })->name('admin.maintenance.toggle');
+    Route::post('/admin/maintenance/toggle', [AdminController::class, 'toggleMaintenanceMode'])->name('admin.maintenance.toggle');
 });
 
 

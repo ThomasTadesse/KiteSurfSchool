@@ -14,8 +14,10 @@
             <a href="{{ route('lespakketten.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Cursussen</a>
             <a href="/contact" class="text-lg hover:text-blue-200 transition duration-200">Contact</a>
             @auth
+                @if(Auth::user()->isEigenaar())
                 <a href="{{ route('students.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Studenten</a>
                 <a href="{{ route('instructors.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Instructeurs</a>
+                @endif
                 <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
             @else
                 <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
@@ -29,6 +31,26 @@
         </div>
     </nav>
 
+    @if (isset($isMaintenanceMode) && $isMaintenanceMode)
+        <main
+            class="fixed inset-0 z-50 grid min-h-screen min-w-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+            <!-- Preloader -->
+            <div id="preloader" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-600"></div>
+            </div>
+
+            <img src="{{ asset('svg/maintenance.svg') }}" alt="Onderhoud"
+                class="absolute inset-0 w-full h-full object-cover opacity-80 pointer-events-none" style="z-index:0;">
+            <div class="text-center relative z-10">
+                <h1 class="mt-4 text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
+                    De website is momenteel in onderhoud.
+                </h1>
+                <p class="mt-6 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
+                    Sorry, we kunnen de pagina niet vinden.
+                </p>
+            </div>
+        </main>
+    @else
     <div class="container mx-auto px-4 py-12">
         <div class="bg-white p-8 rounded-xl shadow-lg max-w-3xl mx-auto">
             <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Welkom, {{ Auth::user()->name }}</h1>
@@ -473,3 +495,4 @@
     </script>
 </body>
 </html>
+@endif

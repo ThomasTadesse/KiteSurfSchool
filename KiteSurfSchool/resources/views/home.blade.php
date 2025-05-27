@@ -27,6 +27,26 @@
         </div>
     </nav>
     
+    @if (isset($isMaintenanceMode) && $isMaintenanceMode)
+        <main
+            class="fixed inset-0 z-50 grid min-h-screen min-w-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+            <!-- Preloader -->
+            <div id="preloader" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+                <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-600"></div>
+            </div>
+
+            <img src="{{ asset('svg/maintenance.svg') }}" alt="Onderhoud"
+                class="absolute inset-0 w-full h-full object-cover opacity-80 pointer-events-none" style="z-index:0;">
+            <div class="text-center relative z-10">
+                <h1 class="mt-4 text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
+                    De website is momenteel in onderhoud.
+                </h1>
+                <p class="mt-6 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
+                    Sorry, we kunnen de pagina niet vinden.
+                </p>
+            </div>
+        </main>
+    @else
     <!-- Hero Section - Enhanced with call-to-action -->
     <div class="relative h-[500px]">
         <img src="https://img.freepik.com/free-photo/person-surfing-flying-parachute-same-time-kitesurfing-bonaire-caribbean_181624-11389.jpg?t=st=1746515797~exp=1746519397~hmac=b494e04f2567079e70d4fd4dd664a39a45d0063234cc0fbf35038fbe555deced&w=1380" 
@@ -267,5 +287,6 @@
             <p>&copy; {{ date('Y') }} KiteSurfschool Windkracht-12. Alle rechten voorbehouden.</p>
         </div>
     </footer>
+    @endif
 </body>
 </html>
