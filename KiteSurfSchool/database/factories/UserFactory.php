@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,7 +30,25 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'activation_token' => Str::random(60),
+            'active' => false,
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function ($user) {
+            // Assign default 'klant' role to newly created users
+            $klantRole = Role::where('slug', 'klant')->first();
+            if ($klantRole) {
+                $user->roles()->attach($klantRole);
+            }
+        });
     }
 
     /**
@@ -40,5 +59,18 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+    
+    /**
+     * Indicate that the user should have the given role.
+     */
+    public function withRole(string $roleSlug): static
+    {
+        return $this->afterCreating(function ($user) use ($roleSlug) {
+            $role = Role::where('slug', $roleSlug)->first();
+            if ($role) {
+                $user->roles()->sync([$role->id]);
+            }
+        });
     }
 }
