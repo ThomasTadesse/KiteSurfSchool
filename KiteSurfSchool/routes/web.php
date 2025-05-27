@@ -8,6 +8,7 @@ use App\Http\Controllers\PasswordResetLinkController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('home');
@@ -32,6 +33,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 // Profile routes
 Route::middleware('auth')->group(function () {
     Route::get('/profiel', [ProfileController::class, 'show'])->name('profile.show');
+    
+    // Admin routes for site maintenance
+    Route::post('/admin/maintenance/toggle', function() {
+        // Placeholder for maintenance mode toggle functionality
+        return back()->with('success', 'Maintenance mode setting updated.');
+    })->name('admin.maintenance.toggle');
 });
 
 
