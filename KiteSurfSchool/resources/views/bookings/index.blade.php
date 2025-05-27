@@ -154,7 +154,7 @@
                                                         @if($booking->status != 'geannuleerd')
                                                             <a href="{{ route('bookings.cancel', $booking->id) }}" class="text-orange-500 hover:underline p-1" title="Annuleren">✗</a>
                                                         @endif
-                                                        <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" class="delete-form">
+                                                        <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" class="delete-form" data-booking-date="{{ $booking->datum }}">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="text-red-500 hover:underline p-1" title="Verwijderen">🗑️</button>
@@ -250,7 +250,22 @@
     document.querySelectorAll('.delete-form').forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            if (confirm('Weet je zeker dat je deze boeking permanent wilt verwijderen? Dit kan niet ongedaan worden gemaakt!')) {
+            
+            // Get booking date and check if it's older than 7 years
+            const bookingDate = new Date(this.dataset.bookingDate);
+            const currentDate = new Date();
+            const sevenYearsAgo = new Date();
+            sevenYearsAgo.setFullYear(currentDate.getFullYear() - 7);
+            
+            let confirmMessage = 'Weet je zeker dat je deze boeking permanent wilt verwijderen? Dit kan niet ongedaan worden gemaakt!';
+            
+            if (bookingDate < sevenYearsAgo) {
+                confirmMessage = 'Deze boeking is ouder dan 7 jaar en mag conform privacyrichtlijnen verwijderd worden. Wil je doorgaan met verwijderen?';
+            } else {
+                confirmMessage = 'Let op: deze boeking is nog geen 7 jaar oud. Volgens privacyregels moet deze bewaard blijven. Alleen verwijderen indien strikt noodzakelijk. Wil je toch doorgaan?';
+            }
+            
+            if (confirm(confirmMessage)) {
                 this.submit();
             }
         });
