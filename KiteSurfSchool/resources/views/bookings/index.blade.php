@@ -131,7 +131,7 @@
                                         <tbody class="text-gray-800 text-sm font-light">
                                             @foreach ($bookings as $booking)
                                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                                                    <td class="py-3 px-2 sm:px-6 truncate max-w-[100px] sm:max-w-none">{{ $booking->id }}</td>
+                                                    <td class="py-3 px-2 sm:px-6 truncate max-w-[100px] sm:max-w-none">{{ $booking->invoice_number }}</td>
                                                     <td class="py-3 px-2 sm:px-6 truncate max-w-[100px] sm:max-w-none">{{ $booking->user->name ?? 'Onbekend' }}</td>
                                                     <td class="py-3 px-2 sm:px-6 hidden sm:table-cell">{{ date('d-m-Y', strtotime($booking->datum)) }}</td>
                                                     <td class="py-3 px-2 sm:px-6">

@@ -70,6 +70,7 @@ class BookingSeeder extends Seeder
                 DB::table('bookings')->insert([
                     'user_id' => $faker->randomElement($userIds),
                     'lespakket_id' => $faker->randomElement($lespakketIds),
+                    'invoice_number' => 'INV-' . $faker->unique()->numerify('######'),
                     'datum' => $bookingDate,
                     'status' => $status,
                     'payment_status' => $paymentStatus,

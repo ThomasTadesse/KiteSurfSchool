@@ -15,6 +15,7 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'lespakket_id',
+        'invoice_number',
         'datum',
         'status',
         'payment_status',
