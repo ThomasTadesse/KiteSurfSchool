@@ -27,7 +27,7 @@
         </div>
     </nav>
     
-    @if (isset($isMaintenanceMode) && $isMaintenanceMode)
+     @if (isset($isMaintenanceMode) && $isMaintenanceMode)
         <main
             class="fixed inset-0 z-50 grid min-h-screen min-w-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
             <!-- Preloader -->

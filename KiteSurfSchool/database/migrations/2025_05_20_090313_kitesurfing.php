@@ -139,17 +139,20 @@ return new class extends Migration
         });
 
         // Create lespakkettens table
-        Schema::create('lespakkettens', function (Blueprint $table) {
+     Schema::create('lespakkettens', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('instructor_id')->nullable()->constrained('instructors')->onDelete('set null');
+            $table->foreignId('student_id')->nullable()->constrained('students')->onDelete('set null');
             $table->string('naam');
-            $table->text('beschrijving');
+            $table->text('beschrijving')->nullable();
             $table->decimal('prijs', 8, 2);
-            $table->float('duur');
-            $table->integer('aantal_personen');
+            $table->integer('duur')->comment('Duration in minutes');
+            $table->string('niveau')->default('beginner');
+            $table->boolean('active')->default(true);
+            $table->integer('aantal_personen')->default(1);
             $table->integer('aantal_lessen')->default(1);
             $table->integer('aantal_dagdelen')->default(1);
-            $table->boolean('materiaal_inbegrepen')->default(true);
-            $table->foreignId('instructor_id')->nullable()->constrained('instructors')->onDelete('set null');
+            $table->boolean('materiaal_inbegrepen')->default(false);
             $table->timestamps();
         });
 
@@ -165,6 +168,18 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['student_id', 'lespakket_id', 'start_date']);
+        });
+
+        // Create bookings table
+         Schema::create('bookings', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('lespakket_id')->constrained()->onDelete('cascade');
+            $table->dateTime('datum');
+            $table->string('status')->default('in behandeling'); // 'in behandeling', 'bevestigd', 'geannuleerd'
+            $table->string('payment_status')->default('pending'); // 'pending', 'paid', 'refunded'
+            $table->text('notes')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -188,5 +203,6 @@ return new class extends Migration
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('bookings');
     }
 };

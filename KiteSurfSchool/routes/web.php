@@ -9,6 +9,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\SystemStatsController;
+use App\Http\Controllers\SystemStatsService;
 
 Route::get('/', function () {
     return view('home');
@@ -97,6 +100,11 @@ Route::get('/lespakketten/{lespakketten}', [LespakkettenController::class, 'show
 // Admin routes for lesson packages
 Route::middleware(['auth'])->group(function () {
     Route::resource('admin/lespakketten', LespakkettenController::class)->except(['index']);
+});
+
+// Booking routes
+Route::middleware(['auth'])->group(function () {
+    Route::resource('bookings', BookingController::class);
 });
 
 
