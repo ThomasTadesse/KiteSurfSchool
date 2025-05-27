@@ -174,7 +174,7 @@ return new class extends Migration
          Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('lespakket_id')->constrained()->onDelete('cascade');
+            $table->foreignId('lespakket_id')->constrained('lespakkettens')->onDelete('cascade');
             $table->dateTime('datum');
             $table->string('status')->default('in behandeling'); // 'in behandeling', 'bevestigd', 'geannuleerd'
             $table->string('payment_status')->default('pending'); // 'pending', 'paid', 'refunded'

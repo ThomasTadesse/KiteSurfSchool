@@ -9,7 +9,8 @@ class Lespakket extends Model
 {
     use HasFactory;
 
-    protected $table = 'lespakketten';
+    // Specify the correct table name
+    protected $table = 'lespakkettens';
     
     /**
      * The attributes that are mass assignable.
@@ -17,12 +18,18 @@ class Lespakket extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'instructor_id',
+        'student_id',
         'naam',
         'beschrijving',
         'prijs',
         'duur',
         'niveau',
-        'active'
+        'active',
+        'aantal_personen',
+        'aantal_lessen',
+        'aantal_dagdelen',
+        'materiaal_inbegrepen'
     ];
 
     /**
