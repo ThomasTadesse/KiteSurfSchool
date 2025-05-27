@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studenten</title>
+    <title>Student bewerken - {{ $student->user->name }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -31,84 +31,83 @@
             <h1 class="text-4xl font-bold text-white tracking-wider">Surf the waves</h1>
         </div>
     </div>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Edit Student') }}</div>
+    
+    <div class="container mx-auto px-4 py-12">
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+            <h1 class="text-3xl font-bold mb-2 text-gray-800 text-center">Student bewerken</h1>
+            <p class="text-center text-gray-600 mb-6">{{ $student->user->name }}</p>
 
-                <div class="card-body">
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('students.update', $student) }}">
-                        @csrf
-                        @method('PUT')
-
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('User') }}</label>
-                            <input type="text" class="form-control" value="{{ $student->user->name }} ({{ $student->user->email }})" disabled>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="date_of_birth" class="form-label">{{ __('Date of Birth') }}</label>
-                            <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth', $student->date_of_birth) }}">
-                            @error('date_of_birth')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="emergency_contact_name" class="form-label">{{ __('Emergency Contact Name') }}</label>
-                            <input id="emergency_contact_name" type="text" class="form-control @error('emergency_contact_name') is-invalid @enderror" name="emergency_contact_name" value="{{ old('emergency_contact_name', $student->emergency_contact_name) }}">
-                            @error('emergency_contact_name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="emergency_contact_phone" class="form-label">{{ __('Emergency Contact Phone') }}</label>
-                            <input id="emergency_contact_phone" type="text" class="form-control @error('emergency_contact_phone') is-invalid @enderror" name="emergency_contact_phone" value="{{ old('emergency_contact_phone', $student->emergency_contact_phone) }}">
-                            @error('emergency_contact_phone')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="medical_notes" class="form-label">{{ __('Medical Notes') }}</label>
-                            <textarea id="medical_notes" class="form-control @error('medical_notes') is-invalid @enderror" name="medical_notes" rows="3">{{ old('medical_notes', $student->medical_notes) }}</textarea>
-                            @error('medical_notes')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ route('students.show', $student) }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Update Student') }}
-                            </button>
-                        </div>
-                    </form>
+            @if ($errors->any())
+                <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+                    <p class="font-bold">Er zijn fouten gevonden in het formulier:</p>
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-            </div>
+            @endif
+
+            <form method="POST" action="{{ route('students.update', $student) }}">
+                @csrf
+                @method('PUT')
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Gebruiker</label>
+                    <div class="px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-700">
+                        {{ $student->user->name }} ({{ $student->user->email }})
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">De gebruiker kan niet worden gewijzigd</p>
+                </div>
+
+                <div class="mb-6">
+                    <label for="date_of_birth" class="block text-sm font-medium text-gray-700 mb-1">Geboortedatum</label>
+                    <input id="date_of_birth" type="date" name="date_of_birth" value="{{ old('date_of_birth', $student->date_of_birth) }}"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    @error('date_of_birth')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-6">
+                    <label for="emergency_contact_name" class="block text-sm font-medium text-gray-700 mb-1">Contactpersoon voor noodgevallen</label>
+                    <input id="emergency_contact_name" type="text" name="emergency_contact_name" value="{{ old('emergency_contact_name', $student->emergency_contact_name) }}"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    @error('emergency_contact_name')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-6">
+                    <label for="emergency_contact_phone" class="block text-sm font-medium text-gray-700 mb-1">Telefoonnummer contactpersoon</label>
+                    <input id="emergency_contact_phone" type="text" name="emergency_contact_phone" value="{{ old('emergency_contact_phone', $student->emergency_contact_phone) }}"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    @error('emergency_contact_phone')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-6">
+                    <label for="medical_notes" class="block text-sm font-medium text-gray-700 mb-1">Medische bijzonderheden</label>
+                    <textarea id="medical_notes" name="medical_notes" rows="3"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ old('medical_notes', $student->medical_notes) }}</textarea>
+                    @error('medical_notes')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex justify-between items-center mt-8">
+                    <a href="{{ route('students.show', $student) }}" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Annuleren
+                    </a>
+                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Gegevens bijwerken
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
+    
     <footer class="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-8">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

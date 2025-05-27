@@ -11,6 +11,9 @@ class Student extends Model
 {
     use HasFactory;
 
+    public $primaryKey = 'id';
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'date_of_birth',
@@ -18,6 +21,22 @@ class Student extends Model
         'emergency_contact_phone',
         'medical_notes',
     ];
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'id';
+    }
+    
+    // Add this method to help with route model binding debugging
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('id', $value)->firstOrFail();
+    }
 
     /**
      * Get the user that owns the student profile.
@@ -32,7 +51,7 @@ class Student extends Model
      */
     public function lespakketten(): BelongsToMany
     {
-        return $this->belongsToMany(Lespakket::class, 'student_lespakket')
+        return $this->belongsToMany(lespakketten::class, 'student_lespakket')
                     ->withPivot(['start_date', 'end_date', 'status', 'notes'])
                     ->withTimestamps();
     }

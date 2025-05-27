@@ -39,24 +39,33 @@ Route::middleware('auth')->group(function () {
 });
 
 
-// students
+// Students - clean up the routes to avoid conflicts
 Route::middleware(['auth'])->group(function () {
-    Route::resource('admin/students', StudentController::class)->except(['index']);
-    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
-    Route::get('/students/{student}', [StudentController::class, 'show'])->name('students.show');
-    Route::post('/students', [StudentController::class, 'store'])->name('students.store');
-    Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
-    Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+    // Use a single resource definition for students - this automatically creates all required routes
+    Route::resource('students', StudentController::class);
+    
+    // Remove these conflicting routes:
+    // Route::resource('admin/students', StudentController::class)->except(['index']);
+    // Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    // Route::get('/students/{student}', [StudentController::class, 'show'])->name('students.show');
+    // Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+    // Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
+    // Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
 });
 
-// instructors
+
+// instructors - let's also clean this up the same way
 Route::middleware(['auth'])->group(function () {
-    Route::resource('admin/instructors', InstructorController::class)->except(['index']);
-    Route::get('/instructors', [InstructorController::class, 'index'])->name('instructors.index');
-    Route::get('/instructors/{instructor}', [InstructorController::class, 'show'])->name('instructors.show');
-    Route::post('/instructors', [InstructorController::class, 'store'])->name('instructors.store');
-    Route::put('/instructors/{instructor}', [InstructorController::class, 'update'])->name('instructors.update');
-    Route::delete('/instructors/{instructor}', [InstructorController::class, 'destroy'])->name('instructors.destroy');
+    // Use a single resource definition for instructors
+    Route::resource('instructors', InstructorController::class);
+    
+    // Remove these conflicting routes:
+    // Route::resource('admin/instructors', InstructorController::class)->except(['index']);
+    // Route::get('/instructors', [InstructorController::class, 'index'])->name('instructors.index');
+    // Route::get('/instructors/{instructor}', [InstructorController::class, 'show'])->name('instructors.show');
+    // Route::post('/instructors', [InstructorController::class, 'store'])->name('instructors.store');
+    // Route::put('/instructors/{instructor}', [InstructorController::class, 'update'])->name('instructors.update');
+    // Route::delete('/instructors/{instructor}', [InstructorController::class, 'destroy'])->name('instructors.destroy');
 });
 
 
