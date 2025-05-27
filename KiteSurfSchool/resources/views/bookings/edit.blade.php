@@ -31,96 +31,145 @@
             <h1 class="text-4xl font-bold text-white tracking-wider">Surf the waves</h1>
         </div>
     </div>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2>Boeking bewerken</h2>
-                </div>
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto">
+        <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+            <div class="p-5 bg-white">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Factuur bewerken</h2>
 
-                <div class="card-body">
-                    @if (session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+                @if (session('error'))
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
-                    <form method="POST" action="{{ route('bookings.update', $booking) }}">
-                        @csrf
-                        @method('PUT')
+                <form method="POST" action="{{ route('bookings.update', $booking) }}">
+                    @csrf
+                    @method('PUT')
 
+                    <!-- Cursus informatie section -->
+                    <div class="mb-4">
+                        <h3 class="text-base font-medium text-gray-700 mb-2 pb-1 border-b border-gray-200">Cursus informatie</h3>
+                        
+                        <!-- Lespakket -->
                         <div class="mb-3">
-                            <label for="lespakket_id" class="form-label">Lespakket</label>
-                            <select name="lespakket_id" id="lespakket_id" class="form-control @error('lespakket_id') is-invalid @enderror" required>
+                            <label for="lespakket_id" class="block text-sm font-medium text-gray-700 mb-1">Lespakket</label>
+                            <select name="lespakket_id" id="lespakket_id" 
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('lespakket_id') border-red-500 @enderror" required>
                                 <option value="">Selecteer een lespakket</option>
                                 @foreach($lespakketten as $lespakket)
                                     <option value="{{ $lespakket->id }}" {{ (old('lespakket_id', $booking->lespakket_id) == $lespakket->id) ? 'selected' : '' }}>
-                                        {{ $lespakket->name }} (€{{ number_format($lespakket->price, 2) }}) - {{ $lespakket->duration }} min.
+                                        {{ $lespakket->naam }} (€{{ number_format($lespakket->prijs, 2) }}) - {{ $lespakket->duur }} min.
                                     </option>
                                 @endforeach
                             </select>
                             @error('lespakket_id')
-                                <span class="invalid-feedback">{{ $message }}</span>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
+                        <!-- Datum en tijd -->
                         <div class="mb-3">
-                            <label for="datum" class="form-label">Datum en tijd</label>
-                            <input type="datetime-local" name="datum" id="datum" class="form-control @error('datum') is-invalid @enderror" 
+                            <label for="datum" class="block text-sm font-medium text-gray-700 mb-1">Datum en tijd</label>
+                            <input type="datetime-local" name="datum" id="datum" 
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('datum') border-red-500 @enderror" 
                                 value="{{ old('datum', $booking->datum ? date('Y-m-d\TH:i', strtotime($booking->datum)) : '') }}" required>
                             @error('datum')
-                                <span class="invalid-feedback">{{ $message }}</span>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-
+                        
+                        <!-- Instructeur -->
                         <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
-                                <option value="in behandeling" {{ old('status', $booking->status) == 'in behandeling' ? 'selected' : '' }}>In behandeling</option>
-                                <option value="bevestigd" {{ old('status', $booking->status) == 'bevestigd' ? 'selected' : '' }}>Bevestigd</option>
-                                <option value="geannuleerd" {{ old('status', $booking->status) == 'geannuleerd' ? 'selected' : '' }}>Geannuleerd</option>
+                            <label for="instructor_id" class="block text-sm font-medium text-gray-700 mb-1">Instructeur</label>
+                            <select name="instructor_id" id="instructor_id" 
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('instructor_id') border-red-500 @enderror">
+                                <option value="">Selecteer een instructeur (optioneel)</option>
+                                @foreach($instructors as $instructor)
+                                    <option value="{{ $instructor->id }}" {{ (old('instructor_id', $booking->instructor_id) == $instructor->id) ? 'selected' : '' }}>
+                                        {{ $instructor->user->name }} ({{ $instructor->specialization }})
+                                    </option>
+                                @endforeach
                             </select>
-                            @error('status')
-                                <span class="invalid-feedback">{{ $message }}</span>
+                            @error('instructor_id')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="payment_status" class="form-label">Betalingsstatus</label>
-                            <select name="payment_status" id="payment_status" class="form-control @error('payment_status') is-invalid @enderror" required>
-                                <option value="pending" {{ old('payment_status', $booking->payment_status) == 'pending' ? 'selected' : '' }}>Nog niet betaald</option>
-                                <option value="paid" {{ old('payment_status', $booking->payment_status) == 'paid' ? 'selected' : '' }}>Betaald</option>
-                                <option value="refunded" {{ old('payment_status', $booking->payment_status) == 'refunded' ? 'selected' : '' }}>Terugbetaald</option>
-                            </select>
-                            @error('payment_status')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
+                    <!-- Status informatie section -->
+                    <div class="mb-4">
+                        <h3 class="text-base font-medium text-gray-700 mb-2 pb-1 border-b border-gray-200">Status informatie</h3>
+                        
+                        <div class="md:flex md:space-x-3">
+                            <!-- Boekingsstatus -->
+                            <div class="mb-3 md:w-1/2">
+                                <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                <select name="status" id="status" 
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('status') border-red-500 @enderror" required>
+                                    <option value="in behandeling" {{ old('status', $booking->status) == 'in behandeling' ? 'selected' : '' }}>In behandeling</option>
+                                    <option value="bevestigd" {{ old('status', $booking->status) == 'bevestigd' ? 'selected' : '' }}>Bevestigd</option>
+                                    <option value="geannuleerd" {{ old('status', $booking->status) == 'geannuleerd' ? 'selected' : '' }}>Geannuleerd</option>
+                                </select>
+                                @error('status')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">Opmerkingen</label>
-                            <textarea name="notes" id="notes" rows="3" class="form-control @error('notes') is-invalid @enderror">{{ old('notes', $booking->notes) }}</textarea>
-                            @error('notes')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Boeking informatie</label>
-                            <div class="card p-3 bg-light">
-                                <p class="mb-1">Boekingsnummer: {{ $booking->invoice_number ?? 'Nog niet toegewezen' }}</p>
-                                <p class="mb-1">Klant: {{ $booking->user->name ?? 'Onbekend' }}</p>
-                                <p class="mb-1">Aangemaakt op: {{ $booking->created_at->format('d-m-Y H:i') }}</p>
+                            <!-- Betalingsstatus -->
+                            <div class="mb-3 md:w-1/2">
+                                <label for="payment_status" class="block text-sm font-medium text-gray-700 mb-1">Betalingsstatus</label>
+                                <select name="payment_status" id="payment_status" 
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('payment_status') border-red-500 @enderror" required>
+                                    <option value="pending" {{ old('payment_status', $booking->payment_status) == 'pending' ? 'selected' : '' }}>Nog niet betaald</option>
+                                    <option value="paid" {{ old('payment_status', $booking->payment_status) == 'paid' ? 'selected' : '' }}>Betaald</option>
+                                    <option value="refunded" {{ old('payment_status', $booking->payment_status) == 'refunded' ? 'selected' : '' }}>Terugbetaald</option>
+                                </select>
+                                @error('payment_status')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
-
+                    </div>
+                    
+                    <!-- Extra informatie section -->
+                    <div class="mb-4">
+                        <h3 class="text-base font-medium text-gray-700 mb-2 pb-1 border-b border-gray-200">Extra informatie</h3>
+                        
+                        <!-- Opmerkingen -->
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">Boeking bijwerken</button>
-                            <a href="{{ route('bookings.index') }}" class="btn btn-secondary">Annuleren</a>
+                            <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Opmerkingen</label>
+                            <textarea name="notes" id="notes" rows="3" 
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 @error('notes') border-red-500 @enderror"
+                                placeholder="Voeg hier eventuele opmerkingen toe...">{{ old('notes', $booking->notes) }}</textarea>
+                            @error('notes')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <!-- Boeking informatie section -->
+                    <div class="mb-4">
+                        <h3 class="text-base font-medium text-gray-700 mb-2 pb-1 border-b border-gray-200">Boeking informatie</h3>
+                        <div class="bg-blue-50 p-3 rounded-md border border-blue-100">
+                            <p class="mb-1 text-sm"><span class="font-medium">Factuursnummer:</span> {{ $booking->invoice_number ?? 'Nog niet toegewezen' }}</p>
+                            <p class="mb-1 text-sm"><span class="font-medium">Klant:</span> {{ $booking->user->name ?? 'Onbekend' }}</p>
+                            <p class="mb-1 text-sm"><span class="font-medium">Aangemaakt op:</span> {{ $booking->created_at->format('d-m-Y H:i') }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex items-center justify-end mt-6">
+                        <a href="{{ route('bookings.index') }}" 
+                            class="mr-3 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition duration-150 ease-in-out">
+                            Annuleren
+                        </a>
+                        <button type="submit" 
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            Boeking bijwerken
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

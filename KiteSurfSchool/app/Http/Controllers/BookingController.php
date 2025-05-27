@@ -159,7 +159,8 @@ class BookingController extends Controller
     {
         try {
             $lespakketten = Lespakket::all();
-            return view('bookings.edit', compact('booking', 'lespakketten'));
+            $instructors = Instructor::with('user')->get();
+            return view('bookings.edit', compact('booking', 'lespakketten', 'instructors'));
         } catch (\Exception $e) {
             Log::error('Error loading edit booking form: ' . $e->getMessage());
             return redirect()->route('bookings.index')
@@ -178,6 +179,7 @@ class BookingController extends Controller
             'status' => 'required|in:in behandeling,bevestigd,geannuleerd',
             'payment_status' => 'required|in:pending,paid,refunded',
             'notes' => 'nullable|string|max:500',
+            'instructor_id' => 'nullable|exists:instructors,id',
         ]);
 
         try {
