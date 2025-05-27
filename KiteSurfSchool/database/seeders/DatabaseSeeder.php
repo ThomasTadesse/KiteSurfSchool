@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             LespakkettenSeeder::class,
             StudentSeeder::class,
             InstructorSeeder::class,
+            BookingSeeder::class,
             // Other seeders...
         ]);
     }
