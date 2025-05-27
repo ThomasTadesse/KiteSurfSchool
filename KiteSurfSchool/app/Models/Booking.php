@@ -15,13 +15,11 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'lespakket_id',
-        'invoice_number',
         'datum',
         'status',
         'payment_status',
+        'invoice_number',
         'notes',
-        'price',
-        'instructor_id'
     ];
 
     protected $casts = [
@@ -42,13 +40,5 @@ class Booking extends Model
     public function lespakket(): BelongsTo
     {
         return $this->belongsTo(Lespakket::class, 'lespakket_id');
-    }
-
-    /**
-     * Get the instructor associated with the booking
-     */
-    public function instructor(): BelongsTo
-    {
-        return $this->belongsTo(Instructor::class);
     }
 }

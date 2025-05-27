@@ -6,8 +6,10 @@ use App\Models\Booking;
 use App\Models\Lespakket;
 use App\Models\Student;
 use App\Models\Instructor;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
 
@@ -135,6 +137,50 @@ class BookingController extends Controller
             return back()->withInput()
                 ->with('error', 'Er is een fout opgetreden bij het aanmaken van de boeking: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Store a booking from a public user (not logged in)
+     */
+    public function storePublic(Request $request)
+    {
+        $validated = $request->validate([
+            'lespakket_id' => 'required|exists:lespakkettens,id',
+            'naam' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'telefoon' => 'required|string|max:20',
+            'datum' => 'required|date|after:today',
+            'notes' => 'nullable|string',
+        ]);
+
+        // Check if user exists by email
+        $user = User::where('email', $validated['email'])->first();
+
+        // If user doesn't exist, create a temporary user
+        if (!$user) {
+            $user = new User;
+            $user->name = $validated['naam'];
+            $user->email = $validated['email'];
+            $user->password = bcrypt(Str::random(16)); // Generate a random password
+            $user->activation_token = Str::random(60);
+            $user->active = false;
+            $user->save();
+        }
+
+        $booking = new Booking;
+        $booking->user_id = $user->id;
+        $booking->lespakket_id = $validated['lespakket_id'];
+        $booking->datum = $validated['datum'];
+        $booking->status = 'in behandeling';
+        $booking->payment_status = 'pending';
+        $booking->invoice_number = 'INV-' . Str::random(10);
+        $booking->notes = $validated['notes'] ?? null;
+        $booking->save();
+
+        // Here you can add email notifications to admin and user
+
+        return redirect()->back()
+            ->with('success', 'Je boeking is succesvol ontvangen! We nemen zo spoedig mogelijk contact met je op om de details te bespreken.');
     }
 
     /**

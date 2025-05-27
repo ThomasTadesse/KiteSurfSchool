@@ -115,6 +115,9 @@ Route::post('/reset-password', function () {
 Route::get('/lespakketten', [LespakkettenController::class, 'index'])->name('lespakketten.index');
 Route::get('/lespakketten/{lespakketten}', [LespakkettenController::class, 'show'])->name('lespakketten.show');
 
+// Public booking route (no authentication required)
+Route::post('/bookings/public', [BookingController::class, 'storePublic'])->name('bookings.store.public');
+
 // Admin routes for lesson packages
 Route::middleware(['auth'])->group(function () {
     Route::resource('admin/lespakketten', LespakkettenController::class)->except(['index']);
