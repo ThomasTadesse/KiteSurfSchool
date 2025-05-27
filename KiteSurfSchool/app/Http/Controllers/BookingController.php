@@ -16,8 +16,8 @@ class BookingController extends Controller
      */
     public function index(Request $request): View
     {
-        $searchBookingId = $request->input('searchBookingId', '');
-        $searchUser = $request->input('searchUser', '');
+        $searchBookingNumber = $request->input('searchBookingNumber', '');
+        $searchStudent = $request->input('searchStudent', '');
         $searchStatus = $request->input('searchStatus', '');
         $searchDateFrom = $request->input('searchDateFrom', '');
         $searchDateTo = $request->input('searchDateTo', '');
@@ -28,18 +28,26 @@ class BookingController extends Controller
                 ->orderBy('datum', 'desc');
 
             // Apply filters if search parameters are provided
-            if (!empty($searchBookingId)) {
-                $query->where('id', 'LIKE', "%{$searchBookingId}%");
+            if (!empty($searchBookingNumber)) {
+                $query->where('invoice_number', 'LIKE', "%{$searchBookingNumber}%");
             }
 
-            if (!empty($searchUser)) {
-                $query->whereHas('user', function($q) use ($searchUser) {
-                    $q->where('name', 'LIKE', "%{$searchUser}%");
+            if (!empty($searchStudent)) {
+                $query->whereHas('user', function($q) use ($searchStudent) {
+                    $q->where('name', 'LIKE', "%{$searchStudent}%");
                 });
             }
 
             if (!empty($searchStatus)) {
-                $query->where('status', $searchStatus);
+                // Map the frontend value to database value if needed
+                $statusMap = [
+                    'confirmed' => 'bevestigd',
+                    'pending' => 'in behandeling',
+                    'cancelled' => 'geannuleerd'
+                ];
+                
+                $dbStatus = $statusMap[$searchStatus] ?? $searchStatus;
+                $query->where('status', $dbStatus);
             }
 
             if (!empty($searchPaymentStatus)) {
@@ -64,8 +72,8 @@ class BookingController extends Controller
         
         return view('bookings.index', compact(
             'bookings',
-            'searchBookingId',
-            'searchUser',
+            'searchBookingNumber',
+            'searchStudent',
             'searchStatus',
             'searchDateFrom',
             'searchDateTo',

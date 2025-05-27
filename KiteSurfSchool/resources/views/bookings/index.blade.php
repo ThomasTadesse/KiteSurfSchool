@@ -57,11 +57,11 @@
                     <div id="filterSection" class="{{ isset($searchBookingNumber) || isset($searchStudent) || isset($searchStatus) || isset($searchDateFrom) || isset($searchDateTo) ? '' : 'hidden' }} bg-gray-50 p-3 rounded-md mb-3">
                         <form method="GET" action="{{ route('bookings.index') }}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                             <div>
-                                <input type="text" name="searchBookingNumber" id="searchBookingNumber" placeholder="Boekingsnummer" value="{{ $searchBookingNumber ?? '' }}"
+                                <input type="text" name="searchBookingNumber" id="searchBookingNumber" placeholder="Factuurnummer" value="{{ $searchBookingNumber ?? '' }}"
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             </div>
                             <div>
-                                <input type="text" name="searchStudent" id="searchStudent" placeholder="Student" value="{{ $searchStudent ?? '' }}"
+                                <input type="text" name="searchStudent" id="searchStudent" placeholder="Naam" value="{{ $searchStudent ?? '' }}"
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             </div>
                             <div>
