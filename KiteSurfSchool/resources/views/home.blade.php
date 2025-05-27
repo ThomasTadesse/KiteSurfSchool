@@ -49,7 +49,7 @@
     @else
     <!-- Hero Section - Enhanced with call-to-action -->
     <div class="relative h-[500px]">
-        <img src="https://img.freepik.com/free-photo/person-surfing-flying-parachute-same-time-kitesurfing-bonaire-caribbean_181624-11389.jpg?t=st=1746515797~exp=1746519397~hmac=b494e04f2567079e70d4fd4dd664a39a45d0063234cc0fbf35038fbe555deced&w=1380" 
+        <img src="{{ asset('img/highway.jpg') }}" 
             alt="Kitesurfing in Bonaire" 
             class="w-full h-full object-cover object-center">
         <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white text-center px-6">
@@ -64,18 +64,22 @@
         <h2 class="text-2xl font-bold text-blue-700 mb-6 text-center">Onze Lespakketten</h2>
         <div class="grid md:grid-cols-2 gap-8">
             <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <img src="{{ asset('img/black_orange.jpg') }}" alt="Privéles" class="w-full h-48 object-cover rounded-lg mb-4">
                 <h2 class="text-xl font-bold text-blue-700 mb-2">Privéles</h2>
                 <p>2,5 uur – €175 – Volledige persoonlijke aandacht. Alle uitrusting inbegrepen.</p>
             </div>
             <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <img src="{{ asset('img/black_yellow.jpg') }}" alt="Duo Kitesurf" class="w-full h-48 object-cover rounded-lg mb-4">
                 <h2 class="text-xl font-bold text-blue-700 mb-2">Duo Kitesurf</h2>
                 <p>3,5 uur – €135 p.p. – Samen met een partner. Maximaal 2 per instructeur.</p>
             </div>
             <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <img src="{{ asset('img/black_yellow_center.jpg') }}" alt="Lespakket 3x" class="w-full h-48 object-cover rounded-lg mb-4">
                 <h2 class="text-xl font-bold text-blue-700 mb-2">Lespakket 3x</h2>
                 <p>10,5 uur – €375 p.p. – Gehele introductie tot zelfstandig varen.</p>
             </div>
             <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <img src="{{ asset('img/blackbox_yellow.jpg') }}" alt="Lespakket 5x" class="w-full h-48 object-cover rounded-lg mb-4">
                 <h2 class="text-xl font-bold text-blue-700 mb-2">Lespakket 5x</h2>
                 <p>17,5 uur – €675 p.p. – Compleet traject inclusief certificering.</p>
             </div>
@@ -122,7 +126,7 @@
             <div class="flex flex-col md:flex-row gap-6">
                 <div class="flex items-start gap-4">
                     <div class="w-40 rounded-lg">
-                        <img src="https://img.freepik.com/premium-photo/kite-surfing-goa-exhilarating-action-shot_1324785-151889.jpg?w=826" 
+                        <img src="{{ asset('img/driving_lesson.jpg') }}" 
                             alt="Kitesurfing action shot" 
                             class="w-full h-full object-cover rounded-lg">
                     </div>
@@ -134,7 +138,7 @@
                 
                 <div class="flex items-start gap-4 mt-6 md:mt-0">
                     <div class="w-40 rounded-lg">
-                        <img src="https://img.freepik.com/premium-photo/person-kitesurfing-with-kite-board-harness-surf_1314467-56480.jpg?w=826" 
+                        <img src="{{ asset('img/modern_vehicles.jpg ') }}" 
                             alt="Kitesurfer with equipment" 
                             class="w-full h-full object-cover rounded-lg">
                     </div>
@@ -148,7 +152,7 @@
         
         <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex items-center justify-between">
             <div class="w-80 flex items-center justify-center">
-                <img src="https://img.freepik.com/free-photo/young-man-with-kitesurf-board_23-2148197356.jpg?t=st=1746516224~exp=1746519824~hmac=f7244e4f0b20e591e53f1ce8afa309b5c10e2d948cd69a76edd7734f51a393b6&w=1380" alt="">
+                <img src="{{ asset('img/mercedes.jpg') }}" alt="Modern vehicles" class="w-full h-auto rounded-lg">
             </div>
            
             <div class="flex-1 p-6">
@@ -170,6 +174,11 @@
             <h2 class="text-2xl font-bold text-blue-700">Algemene omschrijving</h2>
             <p>Kitesurfen is een vorm van watersport waarbij een sporter op een kleine surfplank staat en zich laat voorttrekken door een kite oftewel vlieger. Een persoon die aan kitesurfen doet wordt een kiter, kitesurfer of kitboarder genoemd. Bij sterke wind kunnen er snelheden behaald worden van 100 km/h. Kitesurfen op de binnenwateren is niet toegestaan in Nederland. Op dit moment zijn er 117 spots waar de sport kan worden beoefend, voornamelijk in bij de kustgebieden van Nederland.</p>
 
+            <div class="grid grid-cols-2 gap-4 my-6">
+                <img src="{{ asset('img/intensive_courses1.jpg') }}" alt="Intensive counts" class="w-full h-auto rounded-lg">
+                <img src="{{ asset('img/driving_lesson.jpg') }}" alt="Personal guidance" class="w-full h-auto rounded-lg">
+            </div>
+
             <h3 class="text-xl font-semibold mt-6">KiteSurfschool Windkracht-12</h3>
             <p>De kitesurfschool Windkracht-12 bestaat al 8 jaar en werkt momenteel met 5 instructeurs: Duco Veenstra, Waldemar van Dongen, Ruud Terlingen, Saskia Brink en Bernie Vredenstein. Daarnaast is Terence Olieslager oprichter en eigenaar. Vanuit Utrecht rijden de instructeurs met de kitespullen naar diverse locaties in Nederland waar ze de studenten treffen die zich hebben aangemeld voor een cursus. De locaties die nu worden gebruikt zijn: Zandvoort, Muiderberg, Wijk aan Zee, IJmuiden, Scheveningen en Hoek van Holland.</p>
 
@@ -188,14 +197,17 @@
             <h2 class="text-2xl font-bold text-center text-blue-700 mb-8">Wat zeggen onze cursisten?</h2>
             <div class="grid md:grid-cols-3 gap-6">
                 <div class="bg-white rounded-xl shadow p-6">
+                    <img src="{{ asset('img/personal_guidance.jpg') }}" alt="Testimonial" class="w-16 h-16 rounded-full mx-auto mb-4">
                     <p class="italic">"Fantastische ervaring! Duco was een topinstructeur en ik voelde me altijd veilig."</p>
                     <p class="mt-4 font-semibold text-blue-600">– Sarah V.</p>
                 </div>
                 <div class="bg-white rounded-xl shadow p-6">
+                    <img src="{{ asset('img/full_yellow_black.jpg') }}" alt="Testimonial" class="w-16 h-16 rounded-full mx-auto mb-4">
                     <p class="italic">"De lessen waren goed gestructureerd en super leerzaam. Absolute aanrader!"</p>
                     <p class="mt-4 font-semibold text-blue-600">– Omar D.</p>
                 </div>
                 <div class="bg-white rounded-xl shadow p-6">
+                    <img src="{{ asset('img/mercedes.jpg') }}" alt="Testimonial" class="w-16 h-16 rounded-full mx-auto mb-4">
                     <p class="italic">"Heerlijke dag gehad op Scheveningen. Goed materiaal en professionele begeleiding."</p>
                     <p class="mt-4 font-semibold text-blue-600">– Femke L.</p>
                 </div>
@@ -224,8 +236,8 @@
         </section>
 
         <!-- Nieuwsbrief -->
-        <section class="bg-blue-700 text-white py-10 rounded-xl">
-            <div class="max-w-md mx-auto text-center px-6">
+        <section class="bg-blue-700 text-white py-10 rounded-xl" style="background-image: url('{{ asset('img/newsletter_background.jpg') }}'); background-size: cover; background-position: center;">
+            <div class="max-w-md mx-auto text-center px-6 bg-black bg-opacity-50 p-8 rounded-xl">
                 <h2 class="text-2xl font-bold mb-4">Blijf op de hoogte!</h2>
                 <p class="mb-6">Schrijf je in voor onze nieuwsbrief en ontvang updates over nieuwe cursussen en acties.</p>
                 <form class="flex flex-col sm:flex-row gap-3">
