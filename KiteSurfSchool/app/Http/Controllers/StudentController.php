@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\User;
+use App\Models\lespakketten;
+
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 
 class StudentController extends Controller
 {
@@ -13,8 +19,52 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::with('user')->get();
-        return view('students.index', compact('students'));
+        try {
+            $students = Student::with('user')->get();
+            
+            // Check if the view exists before rendering
+            if (!View::exists('students.index')) {
+                Log::error('View students.index niet gevonden');
+                return response()->view('errors.custom', [
+                    'message' => 'De pagina die je zoekt kan niet worden gevonden.'
+                ], 404);
+            }
+            
+            return view('students.index', compact('students'));
+        } catch (\Exception $e) {
+            Log::error('Fout bij het ophalen van studenten: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Er is een fout opgetreden bij het ophalen van de studentenlijst.');
+        }
+    }
+
+    /**
+     * Show the form for creating a new student.
+     */
+    public function create()
+    {
+        try {
+            // Get users that are not already students
+            $users = User::whereDoesntHave('student')->get();
+            
+            // If no eligible users are found, return with a message
+            if ($users->isEmpty()) {
+                return redirect()->route('students.index')
+                    ->with('info', 'Alle gebruikers zijn al als student geregistreerd. Maak eerst een nieuwe gebruiker aan.');
+            }
+            
+            // Check if the view exists before rendering
+            if (!View::exists('students.create')) {
+                Log::error('View students.create niet gevonden');
+                return redirect()->route('students.index')
+                    ->with('error', 'Het aanmaakformulier kan niet worden gevonden.');
+            }
+            
+            return view('students.create', compact('users'));
+        } catch (\Exception $e) {
+            Log::error('Fout bij het laden van het create formulier: ' . $e->getMessage());
+            return redirect()->route('students.index')
+                ->with('error', 'Er is een fout opgetreden bij het laden van het formulier: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -31,12 +81,22 @@ class StudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $student = Student::create($validator->validated());
-        
-        return response()->json($student, 201);
+        try {
+            $student = Student::create($validator->validated());
+            
+            return redirect()->route('students.show', $student)
+                ->with('success', 'Student is succesvol aangemaakt!');
+        } catch (\Exception $e) {
+            Log::error('Fout bij het aanmaken van een student: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Er is een fout opgetreden bij het aanmaken van de student.')
+                ->withInput();
+        }
     }
 
     /**
@@ -44,8 +104,58 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        $student->load('user', 'lespakketten');
-        return response()->json($student);
+        try {
+            // Debug information
+            Log::info('Showing student with ID: ' . $student->id);
+            
+            // Eager load user relationship
+            $student->load('user');
+            
+            // Try to load lespakketten separately with error handling
+            try {
+                $student->load('lespakketten');
+            } catch (\Exception $e) {
+                // Log the error but continue without the lespakketten data
+                Log::error('Error loading lespakketten for student: ' . $e->getMessage());
+                // Set an empty collection for lespakketten to avoid template errors
+                $student->setRelation('lespakketten', collect([]));
+            }
+            
+            // Check if the view exists before rendering
+            if (!View::exists('students.show')) {
+                Log::error('View students.show niet gevonden');
+                return redirect()->route('students.index')
+                    ->with('error', 'De detailpagina kan niet worden gevonden.');
+            }
+            
+            return view('students.show', compact('student'));
+        } catch (\Exception $e) {
+            Log::error('Fout bij het tonen van student: ' . $e->getMessage());
+            return redirect()->route('students.index')
+                ->with('error', 'Er is een fout opgetreden bij het tonen van de studentdetails: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Show the form for editing the specified student.
+     */
+    public function edit(Student $student)
+    {
+        try {
+            // Check if the view exists before rendering
+            if (!View::exists('students.edit')) {
+                Log::error('View students.edit niet gevonden');
+                return response()->view('errors.custom', [
+                    'message' => 'Het bewerkingsformulier kan niet worden gevonden.'
+                ], 404);
+            }
+            
+            return view('students.edit', compact('student'));
+        } catch (\Exception $e) {
+            Log::error('Fout bij het laden van het edit formulier voor student ID ' . $student->id . ': ' . $e->getMessage());
+            return redirect()->route('students.index')
+                ->with('error', 'Er is een fout opgetreden bij het laden van het bewerkingsformulier.');
+        }
     }
 
     /**
@@ -61,12 +171,22 @@ class StudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $student->update($validator->validated());
-        
-        return response()->json($student);
+        try {
+            $student->update($validator->validated());
+            
+            return redirect()->route('students.show', $student)
+                ->with('success', 'Studentinformatie is succesvol bijgewerkt!');
+        } catch (\Exception $e) {
+            Log::error('Fout bij het bijwerken van student ID ' . $student->id . ': ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Er is een fout opgetreden bij het bijwerken van de studentinformatie.')
+                ->withInput();
+        }
     }
 
     /**
@@ -74,7 +194,14 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        $student->delete();
-        return response()->json(null, 204);
+        try {
+            $student->delete();
+            return redirect()->route('students.index')
+                ->with('success', 'Student is succesvol verwijderd!');
+        } catch (\Exception $e) {
+            Log::error('Fout bij het verwijderen van student ID ' . $student->id . ': ' . $e->getMessage());
+            return redirect()->route('students.index')
+                ->with('error', 'Er is een fout opgetreden bij het verwijderen van de student.');
+        }
     }
 }

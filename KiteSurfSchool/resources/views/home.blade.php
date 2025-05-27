@@ -14,20 +14,14 @@
             <a href="{{ route('lespakketten.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Cursussen</a>
             <a href="/contact" class="text-lg hover:text-blue-200 transition duration-200">Contact</a>
             @auth
-                <a href="{{ route('students.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Studenten</a>
-                <a href="{{ route('instructors.index') }}" class="text-lg hover:text-blue-200 transition duration-200">Instructeurs</a>
                 <a href="/profiel" class="text-lg hover:text-blue-200 transition duration-200">Profiel</a>
             @else
                 <a href="/login" class="text-lg hover:text-blue-200 transition duration-200">Log in</a>
             @endauth
         </div>
-        <div class="space-x-3">
-            <span class="inline-block w-4 h-4 transform hover:scale-110 transition-transform">📧</span>
-            <span class="inline-block w-4 h-4 transform hover:scale-110 transition-transform">🛒</span>
-        </div>
     </nav>
     
-    @if (isset($isMaintenanceMode) && $isMaintenanceMode)
+     @if (isset($isMaintenanceMode) && $isMaintenanceMode)
         <main
             class="fixed inset-0 z-50 grid min-h-screen min-w-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
             <!-- Preloader -->
